@@ -1,10 +1,10 @@
 // Central environment-aware API URL configurations for ApplyAI
 window.API_BASE = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
-  ? "http://localhost:5000"
-  : "https://your-deployed-backend-url.com"; // placeholder to be replaced in production
+    ? "http://localhost:5000"
+    : "https://applyai-backend-a34d.onrender.com"
 
 // Global custom Toast notification handler
-window.showToast = function(message, type = "success") {
+window.showToast = function (message, type = "success") {
     let toast = document.getElementById("toast");
     if (!toast) {
         toast = document.createElement("div");
@@ -12,7 +12,7 @@ window.showToast = function(message, type = "success") {
         toast.className = "toast";
         document.body.appendChild(toast);
     }
-    
+
     // Set type styling and content
     toast.className = `toast show ${type}`;
     toast.innerHTML = `
@@ -23,7 +23,7 @@ window.showToast = function(message, type = "success") {
     if (window.toastTimeout) {
         clearTimeout(window.toastTimeout);
     }
-    
+
     window.toastTimeout = setTimeout(() => {
         toast.classList.remove("show");
     }, 4000);

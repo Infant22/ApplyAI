@@ -17,11 +17,21 @@ function setAvatarDisplay(el, avatarFilename, userName) {
     if (!el) return;
 
     if (avatarFilename) {
-        el.innerHTML = `<img src="${AVATAR_SERVER_BASE}/uploads/avatars/${avatarFilename}"
+        const initial = (userName || "U").charAt(0).toUpperCase();
+        el.innerHTML = `<img src="${avatarFilename}"
             alt="Profile Photo"
             style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
         el.style.padding = "0";
         el.style.fontSize = "0";
+        const img = el.querySelector("img");
+        if (img) {
+            img.onerror = () => {
+                el.innerHTML = "";
+                el.style.padding = "";
+                el.style.fontSize = "";
+                el.textContent = initial;
+            };
+        }
     } else {
         el.innerHTML = "";
         el.style.padding = "";
@@ -46,7 +56,13 @@ async function uploadAvatar(file, token) {
         body: formData,
     });
 
-    const data = await res.json();
+    const text = await res.text();
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (e) {
+        throw new Error("Photo upload failed. The server did not return a valid response.");
+    }
     if (!res.ok) throw new Error(data.message || "Upload failed");
     return data.avatar; // filename
 }

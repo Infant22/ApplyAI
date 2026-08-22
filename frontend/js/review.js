@@ -167,7 +167,7 @@ async function initReviewPage() {
         copySkills.textContent = userProfile.skills ? userProfile.skills.join(", ") : "Not set";
         copyLinkedin.textContent = userProfile.linkedin || "Not set";
         copyResume.textContent = userProfile.resume 
-            ? `${REVIEW_SERVER_BASE}/uploads/resumes/${userProfile.resume}` 
+            ? userProfile.resume 
             : "No resume uploaded";
 
         // 2. Load pending queue from localStorage

@@ -341,7 +341,7 @@ async function loadUserProfile() {
 // ==========================================
 function renderResumeStatus(resumeFilename) {
     if (resumeFilename) {
-        const fileUrl = `${PROFILE_SERVER_BASE}/uploads/resumes/${resumeFilename}`;
+        const fileUrl = resumeFilename;
         resumeStatusDiv.innerHTML = `
             <div class="has-resume">
                 <p><i class="fa-solid fa-circle-check" style="color: var(--success)"></i> Resume uploaded!</p>
@@ -526,7 +526,13 @@ if (resumeForm) {
                 body: formData
             });
 
-            const data = await res.json();
+            const text = await res.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                throw new Error("Resume upload failed. The server did not return a valid response.");
+            }
 
             if (!res.ok) {
                 throw new Error(data.message || "Failed to upload resume.");

@@ -38,11 +38,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
+    resumePublicId: {
+      type: String,
+      default: ""
+    },
     resumeText: {
       type: String,
       default: ""
     },
     avatar: {
+      type: String,
+      default: ""
+    },
+    avatarPublicId: {
       type: String,
       default: ""
     },

@@ -399,22 +399,22 @@ const uploadAvatarController = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    // Delete old avatar file if it exists
-    if (user.avatar) {
-      const fs = require("fs");
-      const oldPath = require("path").join(__dirname, "..", "uploads", "avatars", user.avatar);
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
+    if (user.avatarPublicId) {
+      const cloudinary = require("../config/cloudinary");
+      try {
+        await cloudinary.uploader.destroy(user.avatarPublicId);
+      } catch (err) {
+        console.error("Failed to delete old avatar from Cloudinary:", err);
       }
     }
 
-    // Save just the filename to DB
-    user.avatar = req.file.filename;
+    user.avatar = req.file.path;
+    user.avatarPublicId = req.file.filename;
     await user.save();
 
     return res.status(200).json({
       message: "Avatar uploaded successfully!",
-      avatar: req.file.filename,
+      avatar: user.avatar,
     });
   } catch (error) {
     return res.status(500).json({ message: "Server Error", error: error.message });
@@ -428,15 +428,17 @@ const deleteAvatarController = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    if (user.avatar) {
-      const fs = require("fs");
-      const oldPath = require("path").join(__dirname, "..", "uploads", "avatars", user.avatar);
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
+    if (user.avatarPublicId) {
+      const cloudinary = require("../config/cloudinary");
+      try {
+        await cloudinary.uploader.destroy(user.avatarPublicId);
+      } catch (err) {
+        console.error("Failed to delete avatar from Cloudinary:", err);
       }
     }
 
     user.avatar = "";
+    user.avatarPublicId = "";
     await user.save();
 
     return res.status(200).json({

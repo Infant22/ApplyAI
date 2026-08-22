@@ -1,13 +1,33 @@
-const fs = require("fs");
 const path = require("path");
+const streamifier = require("streamifier");
 const User = require("../models/User");
+const cloudinary = require("../config/cloudinary");
 const { parseResume } = require("../utils/resumeParser");
 const { createNotification } = require("./notificationController");
+
+const uploadBufferToCloudinary = (buffer, options) => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(options, (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+        });
+        streamifier.createReadStream(buffer).pipe(uploadStream);
+    });
+};
+
+const deleteCloudinaryResume = async (publicId) => {
+    if (!publicId) return;
+    try {
+        await cloudinary.uploader.destroy(publicId, { resource_type: "raw" });
+    } catch (err) {
+        console.error("Failed to delete resume from Cloudinary:", err);
+    }
+};
 
 const uploadResume = async (req, res) => {
     try {
 
-        if (!req.file) {
+        if (!req.file || !req.file.buffer) {
             return res.status(400).json({
                 message: "Please upload a valid PDF, DOC, or DOCX file."
             });
@@ -15,28 +35,31 @@ const uploadResume = async (req, res) => {
 
         const user = await User.findById(req.user.id);
 
-        // Delete old resume if it exists
-        if (user.resume) {
-            const oldResumePath = path.join(
-                __dirname,
-                "../uploads/resumes",
-                user.resume
-            );
+        const ext = path.extname(req.file.originalname).replace(".", "") || "pdf";
+        const uploaded = await uploadBufferToCloudinary(req.file.buffer, {
+            folder: "applyai/resumes",
+            resource_type: "raw",
+            public_id: `resume-${req.user.id}-${Date.now()}`,
+            format: ext
+        });
 
-            if (fs.existsSync(oldResumePath)) {
-                fs.unlinkSync(oldResumePath);
-            }
+        if (user.resumePublicId) {
+            await deleteCloudinaryResume(user.resumePublicId);
         }
 
-        // Save new resume filename
-        user.resume = req.file.filename;
+        user.resume = uploaded.secure_url;
+        user.resumePublicId = uploaded.public_id;
 
         // Extract raw text if it is a PDF
         let parsedDetails = null;
-        console.log("Uploaded file details:", req.file);
+        console.log("Uploaded file details:", {
+            originalname: req.file.originalname,
+            mimetype: req.file.mimetype,
+            size: req.file.size
+        });
         if (req.file.mimetype === "application/pdf" || req.file.originalname.endsWith(".pdf")) {
             try {
-                const pdfBuffer = fs.readFileSync(req.file.path);
+                const pdfBuffer = req.file.buffer;
                 parsedDetails = await parseResume(pdfBuffer);
                 user.resumeText = parsedDetails.rawText;
 
@@ -93,7 +116,7 @@ const uploadResume = async (req, res) => {
 
         return res.status(200).json({
             message: "Resume Uploaded Successfully",
-            file: req.file.filename,
+            file: user.resume,
             parsedDetails
         });
 
@@ -139,20 +162,10 @@ const deleteResume = async (req, res) => {
             });
         }
 
-        // Resume file path
-        const resumePath = path.join(
-            __dirname,
-            "../uploads/resumes",
-            user.resume
-        );
+        await deleteCloudinaryResume(user.resumePublicId);
 
-        // Delete file if it exists
-        if (fs.existsSync(resumePath)) {
-            fs.unlinkSync(resumePath);
-        }
-
-        // Remove filename from database
         user.resume = "";
+        user.resumePublicId = "";
         await user.save();
 
         // Trigger notification

@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const router = express.Router();
 const rateLimit = require("express-rate-limit");
 
@@ -52,7 +53,22 @@ router.post("/block-job", authMiddleware, blockJob);
 router.put("/change-password", authMiddleware, changePassword);
 
 // Avatar Upload & Delete
-router.post("/avatar", authMiddleware, avatarUpload.single("avatar"), uploadAvatarController);
+router.post("/avatar", authMiddleware, (req, res) => {
+    avatarUpload.single("avatar")(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            if (err.code === "LIMIT_FILE_SIZE") {
+                return res.status(400).json({
+                    message: "Image size should not exceed 2 MB.",
+                });
+            }
+            return res.status(400).json({ message: err.message });
+        }
+        if (err) {
+            return res.status(400).json({ message: err.message });
+        }
+        return uploadAvatarController(req, res);
+    });
+});
 router.delete("/avatar", authMiddleware, deleteAvatarController);
 
 module.exports = router;

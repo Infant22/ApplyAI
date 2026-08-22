@@ -1,19 +1,20 @@
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("./cloudinary");
 
-// Storage: save to uploads/avatars/
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/avatars");
-    },
-    filename: (req, file, cb) => {
-        // e.g. avatar-<userId>-<timestamp>.jpg
-        cb(null, `avatar-${req.user.id}-${Date.now()}${path.extname(file.originalname)}`);
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "applyai/avatars",
+        resource_type: "image",
+        allowed_formats: ["jpg", "jpeg", "png", "webp"],
+        public_id: (req, file) => `avatar-${req.user.id}-${Date.now()}`,
+        transformation: [{ width: 300, height: 300, crop: "fill" }]
     }
 });
 
-// Only allow image files
 const fileFilter = (req, file, cb) => {
+    const path = require("path");
     const allowedTypes = [".jpg", ".jpeg", ".png", ".webp"];
     const ext = path.extname(file.originalname).toLowerCase();
     if (allowedTypes.includes(ext)) {
@@ -26,7 +27,7 @@ const fileFilter = (req, file, cb) => {
 const uploadAvatar = multer({
     storage,
     fileFilter,
-    limits: { fileSize: 2 * 1024 * 1024 } // 2 MB max
+    limits: { fileSize: 2 * 1024 * 1024 }
 });
 
 module.exports = uploadAvatar;
