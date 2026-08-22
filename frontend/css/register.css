@@ -1,0 +1,1590 @@
+/* ==========================================
+   Register Page - Layout
+========================================== */
+
+.register-page{
+
+    min-height:100vh;
+
+    background:linear-gradient(135deg,#EFF6FF,#FFFFFF);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:60px 20px;
+
+}
+
+
+
+/* ==========================================
+   Register Container
+========================================== */
+
+.register-container{
+
+    width:100%;
+
+    max-width:1300px;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    align-items:start;
+
+    gap:80px;
+
+}
+
+/* ==========================================
+   Left Section
+========================================== */
+
+.register-left{
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    padding-top:20px;
+
+}
+
+/* Back to Home */
+
+.back-home{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    width:fit-content;
+
+    margin-bottom:30px;
+
+    color:var(--primary);
+
+    font-size:16px;
+
+    font-weight:500;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.back-home:hover{
+
+    transform:translateX(-5px);
+
+}
+
+/* Logo */
+
+.register-left .logo{
+
+    text-decoration:none;
+
+}
+
+.register-left .logo h2{
+
+    font-size:52px;
+
+    color:var(--primary);
+
+    margin-bottom:20px;
+
+}
+
+/* Heading */
+
+.register-left h1{
+
+    font-size:52px;
+
+    line-height:1.2;
+
+    color:var(--text-dark);
+
+    margin-bottom:20px;
+
+}
+
+/* Description */
+
+.register-left p{
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    color:var(--text-light);
+
+    margin-bottom:35px;
+
+    max-width:550px;
+
+}
+
+/* ==========================================
+   Illustration
+========================================== */
+
+.register-illustration{
+
+    display:flex;
+
+    justify-content:flex-start;
+
+    align-items:center;
+
+    margin:15px 0 45px;
+
+}
+
+.register-illustration img{
+
+    width:100%;
+
+    max-width:300px;
+
+    height:auto;
+
+    object-fit:contain;
+
+    transition:transform .4s ease;
+
+}
+
+.register-illustration img:hover{
+
+    transform:translateY(-8px);
+
+}
+
+/* ==========================================
+   Features
+========================================== */
+
+.register-features{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+
+}
+
+.feature{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    color:var(--text-dark);
+
+}
+
+.feature i{
+
+    width:45px;
+
+    height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(37,99,235,.1);
+
+    color:var(--primary);
+
+    font-size:18px;
+
+}
+
+/* ==========================================
+   Right Section
+========================================== */
+
+.register-right{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-start;
+
+}
+/* ==========================================
+   Register Card
+========================================== */
+
+.register-card{
+
+    width:100%;
+
+    max-width:560px;
+
+    background:#FFFFFF;
+
+    border-radius:24px;
+
+    padding:45px;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.06);
+
+    transition:.3s ease;
+
+}
+
+.register-card:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.register-card h2{
+
+    font-size:34px;
+
+    color:var(--text-dark);
+
+    margin-bottom:10px;
+
+}
+
+.register-card>p{
+
+    color:var(--text-light);
+
+    font-size:16px;
+
+    margin-bottom:35px;
+
+}
+
+/* ==========================================
+   Form
+========================================== */
+
+#registerForm{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:22px;
+
+}
+
+.toggle-password{
+
+    transition:.3s ease;
+
+}
+
+.toggle-password:hover{
+
+    color:var(--primary);
+
+    transform:scale(1.15);
+
+}
+
+/* ==========================================
+   Input Group
+========================================== */
+
+.input-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.input-group label{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:var(--text-dark);
+
+    margin-bottom:10px;
+
+}
+
+/* ==========================================
+   Input Fields
+========================================== */
+
+.input-group input{
+
+    width:100%;
+
+    height:56px;
+
+    padding:0 18px;
+
+    border:1.5px solid #D1D5DB;
+
+    border-radius:14px;
+
+    outline:none;
+
+    font-size:16px;
+
+    font-family:'Poppins',sans-serif;
+
+    transition:.3s;
+
+    background:#FFFFFF;
+
+    color:var(--text-dark);
+
+}
+
+.input-group input::placeholder{
+
+    color:#9CA3AF;
+
+}
+
+.input-group input:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+
+}
+
+/* ==========================================
+   Password Field
+========================================== */
+
+.password-field{
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+
+}
+
+.password-field input{
+
+    padding-right:55px;
+
+}
+
+.toggle-password{
+
+    position:absolute;
+
+    right:18px;
+
+    font-size:18px;
+
+    color:#94A3B8;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.toggle-password:hover{
+
+    color:var(--primary);
+
+}
+
+.toggle-password{
+
+    transition:.3s ease;
+
+}
+
+.toggle-password:hover{
+
+    color:var(--primary);
+
+    transform:scale(1.15);
+
+}
+
+/* ==========================================
+   Password Strength
+========================================== */
+
+.password-strength{
+
+    margin-top:-8px;
+
+    margin-bottom:10px;
+
+}
+
+.strength-bar{
+
+    width:100%;
+
+    height:8px;
+
+    background:#E5E7EB;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+    margin-bottom:10px;
+
+}
+
+.strength-bar span{
+
+    display:block;
+
+    width:0;
+
+    height:100%;
+
+    background:#2563EB;
+
+    border-radius:999px;
+
+    transition:.3s ease;
+
+}
+
+.password-strength small{
+
+    color:var(--text-light);
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+/* ==========================================
+   Terms & Conditions
+========================================== */
+
+.terms{
+
+    margin-bottom:10px;
+
+}
+
+.terms label{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    font-size:15px;
+
+    line-height:1.7;
+
+    color:var(--text-light);
+
+    cursor:pointer;
+
+}
+
+.terms input{
+
+    width:18px;
+
+    height:18px;
+
+    margin-top:3px;
+
+    accent-color:var(--primary);
+
+    cursor:pointer;
+
+}
+
+.terms a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.terms a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* ==========================================
+   Create Account Button
+========================================== */
+
+.register-btn-full{
+
+    width:100%;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:var(--primary);
+
+    color:#FFFFFF;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    font-family:'Poppins',sans-serif;
+
+    cursor:pointer;
+
+    transition:.3s ease;
+
+}
+
+.register-btn-full:hover{
+
+    background:#1D4ED8;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 12px 24px rgba(37,99,235,.25);
+
+}
+
+/* ==========================================
+   Divider
+========================================== */
+
+.divider{
+
+    display:flex;
+
+    align-items:center;
+
+    margin:30px 0;
+
+}
+
+.divider::before,
+
+.divider::after{
+
+    content:"";
+
+    flex:1;
+
+    height:1px;
+
+    background:#E5E7EB;
+
+}
+
+.divider span{
+
+    margin:0 20px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#94A3B8;
+
+}
+
+/* ==========================================
+   Google Button
+========================================== */
+
+.google-btn{
+
+    width:100%;
+
+    height:58px;
+
+    border:1.5px solid #D1D5DB;
+
+    border-radius:14px;
+
+    background:#FFFFFF;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:12px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    font-family:'Poppins',sans-serif;
+
+    color:var(--text-dark);
+
+    cursor:pointer;
+
+    transition:.3s ease;
+
+}
+
+.google-btn:hover{
+
+    border-color:var(--primary);
+
+    background:#F8FAFF;
+
+    transform:translateY(-2px);
+
+}
+
+.google-btn i{
+
+    font-size:20px;
+
+    color:#EA4335;
+
+}
+
+/* ==========================================
+   Login Link
+========================================== */
+
+.login-link{
+
+    margin-top:30px;
+
+    text-align:center;
+
+    font-size:15px;
+
+    color:var(--text-light);
+
+}
+
+.login-link a{
+
+    color:var(--primary);
+
+    font-weight:600;
+
+    text-decoration:none;
+
+}
+
+.login-link a:hover{
+
+    text-decoration:underline;
+
+}
+
+/* ==========================================
+   Animations
+========================================== */
+
+/* Register Card */
+
+.register-card{
+
+    animation:fadeUp .8s ease;
+
+}
+
+/* Left Section */
+
+.register-left{
+
+    animation:fadeLeft .8s ease;
+
+}
+
+/* Feature Items */
+
+.feature{
+
+    transition:.3s ease;
+
+}
+
+.feature:hover{
+
+    transform:translateX(8px);
+
+}
+
+.feature:hover i{
+
+    transform:scale(1.1);
+
+    background:var(--primary);
+
+    color:#FFFFFF;
+
+}
+
+/* Illustration */
+
+.register-illustration img{
+
+    transition:.4s ease;
+
+}
+
+.register-illustration img:hover{
+
+    transform:translateY(-8px);
+
+}
+
+/* Back Home */
+
+.back-home{
+
+    transition:.3s ease;
+
+}
+
+.back-home:hover{
+
+    color:#1D4ED8;
+
+}
+
+/* Logo */
+
+.register-left .logo h2{
+
+    transition:.3s ease;
+
+}
+
+.register-left .logo:hover h2{
+
+    transform:scale(1.03);
+
+}
+
+/* Input Animation */
+
+.input-group input{
+
+    transition:
+
+        border-color .3s,
+
+        box-shadow .3s,
+
+        transform .3s;
+
+}
+
+.input-group input:focus{
+
+    transform:translateY(-2px);
+
+}
+
+/* Password Eye */
+
+.toggle-password{
+
+    transition:.3s ease;
+
+}
+
+.toggle-password:hover{
+
+    transform:scale(1.15);
+
+}
+
+/* Register Button */
+
+.register-btn-full{
+
+    transition:
+
+        background .3s,
+
+        transform .3s,
+
+        box-shadow .3s;
+
+}
+
+.register-btn-full:active{
+
+    transform:scale(.98);
+
+}
+
+/* Google Button */
+
+.google-btn{
+
+    transition:
+
+        .3s ease;
+
+}
+
+.google-btn:active{
+
+    transform:scale(.98);
+
+}
+
+/* ==========================================
+   Keyframes
+========================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+@keyframes fadeLeft{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(-50px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+/* ==========================================
+   Dark Mode
+========================================== */
+
+body.dark .register-page{
+
+    background:linear-gradient(135deg,#0F172A,#1E293B);
+
+}
+
+/* ==========================================
+   Left Section
+========================================== */
+
+body.dark .register-left h1{
+
+    color:#F8FAFC;
+
+}
+
+body.dark .register-left p{
+
+    color:#CBD5E1;
+
+}
+
+body.dark .feature{
+
+    color:#F8FAFC;
+
+}
+
+body.dark .feature i{
+
+    background:rgba(96,165,250,.15);
+
+    color:#60A5FA;
+
+}
+
+body.dark .back-home{
+
+    color:#60A5FA;
+
+}
+
+body.dark .back-home:hover{
+
+    color:#93C5FD;
+
+}
+
+body.dark .register-left .logo h2{
+
+    color:#60A5FA;
+
+}
+
+/* ==========================================
+   Register Card
+========================================== */
+
+body.dark .register-card{
+
+    background:#1E293B;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+
+}
+
+body.dark .register-card h2{
+
+    color:#F8FAFC;
+
+}
+
+body.dark .register-card>p{
+
+    color:#CBD5E1;
+
+}
+
+/* ==========================================
+   Form
+========================================== */
+
+body.dark .input-group label{
+
+    color:#F8FAFC;
+
+}
+
+body.dark .input-group input{
+
+    background:#334155;
+
+    border:1.5px solid #475569;
+
+    color:#F8FAFC;
+
+}
+
+body.dark .input-group input::placeholder{
+
+    color:#94A3B8;
+
+}
+
+body.dark .input-group input:focus{
+
+    border-color:#60A5FA;
+
+    box-shadow:0 0 0 4px rgba(96,165,250,.18);
+
+}
+
+body.dark .toggle-password{
+
+    color:#CBD5E1;
+
+}
+
+body.dark .toggle-password:hover{
+
+    color:#60A5FA;
+
+}
+
+/* ==========================================
+   Password Strength
+========================================== */
+
+body.dark .strength-bar{
+
+    background:#334155;
+
+}
+
+body.dark .strength-bar span{
+
+    background:#60A5FA;
+
+}
+
+body.dark .password-strength small{
+
+    color:#CBD5E1;
+
+}
+
+/* ==========================================
+   Terms
+========================================== */
+
+body.dark .terms label{
+
+    color:#CBD5E1;
+
+}
+
+body.dark .terms a{
+
+    color:#60A5FA;
+
+}
+
+/* ==========================================
+   Buttons
+========================================== */
+
+body.dark .register-btn-full{
+
+    background:#2563EB;
+
+}
+
+body.dark .register-btn-full:hover{
+
+    background:#3B82F6;
+
+}
+
+body.dark .google-btn{
+
+    background:#334155;
+
+    border:1.5px solid #475569;
+
+    color:#F8FAFC;
+
+}
+
+body.dark .google-btn:hover{
+
+    background:#3A4A5E;
+
+    border-color:#60A5FA;
+
+}
+
+/* ==========================================
+   Divider
+========================================== */
+
+body.dark .divider::before,
+body.dark .divider::after{
+
+    background:#475569;
+
+}
+
+body.dark .divider span{
+
+    color:#94A3B8;
+
+}
+
+/* ==========================================
+   Login Link
+========================================== */
+
+body.dark .login-link{
+
+    color:#CBD5E1;
+
+}
+
+body.dark .login-link a{
+
+    color:#60A5FA;
+
+}
+
+/* ==========================================
+   Responsive Design
+========================================== */
+
+/* ---------- Large Laptops ---------- */
+
+@media (max-width:1200px){
+
+    .register-container{
+
+        gap:50px;
+
+    }
+
+    .register-left h1{
+
+        font-size:44px;
+
+    }
+
+    .register-left .logo h2{
+
+        font-size:44px;
+
+    }
+
+    .register-card{
+
+        padding:40px;
+
+    }
+
+}
+
+/* ---------- Tablets ---------- */
+
+@media (max-width:992px){
+
+    .register-page{
+
+        padding:50px 25px;
+
+    }
+
+    .register-container{
+
+        grid-template-columns:1fr;
+
+        gap:50px;
+
+    }
+
+    .register-left{
+
+        text-align:center;
+
+        align-items:center;
+
+    }
+
+    .register-left p{
+
+        max-width:650px;
+
+    }
+
+    .register-features{
+
+        width:100%;
+
+        max-width:450px;
+
+    }
+
+    .feature{
+
+        justify-content:flex-start;
+
+    }
+
+    .register-right{
+
+        width:100%;
+
+    }
+
+    .register-card{
+
+        max-width:650px;
+
+    }
+
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width:768px){
+
+    .register-page{
+
+        padding:30px 18px;
+
+    }
+
+    .register-container{
+
+        gap:35px;
+
+    }
+
+    .back-home{
+
+        font-size:15px;
+
+        margin-bottom:20px;
+
+    }
+
+    .register-left .logo h2{
+
+        font-size:38px;
+
+    }
+
+    .register-left h1{
+
+        font-size:36px;
+
+    }
+
+    .register-left p{
+
+        font-size:16px;
+
+        margin-bottom:25px;
+
+    }
+
+    .register-illustration img{
+
+        max-width:280px;
+
+    }
+
+    .register-features{
+
+        gap:16px;
+
+    }
+
+    .feature{
+
+        font-size:16px;
+
+    }
+
+    .feature i{
+
+        width:40px;
+
+        height:40px;
+
+        font-size:16px;
+
+    }
+
+    .register-card{
+
+        padding:30px 24px;
+
+        border-radius:20px;
+
+    }
+
+    .register-card h2{
+
+        font-size:28px;
+
+    }
+
+    .input-group input{
+
+        height:52px;
+
+        font-size:15px;
+
+    }
+
+    .register-btn-full,
+
+    .google-btn{
+
+        height:54px;
+
+        font-size:15px;
+
+    }
+
+}
+
+/* ---------- Small Phones ---------- */
+
+@media (max-width:480px){
+
+    .register-page{
+
+        padding:20px 15px;
+
+    }
+
+    .register-left .logo h2{
+
+        font-size:32px;
+
+    }
+
+    .register-left h1{
+
+        font-size:30px;
+
+    }
+
+    .register-left p{
+
+        font-size:15px;
+
+    }
+
+    .register-illustration img{
+
+        max-width:220px;
+
+    }
+
+    .feature{
+
+        font-size:15px;
+
+    }
+
+    .feature i{
+
+        width:36px;
+
+        height:36px;
+
+        font-size:15px;
+
+    }
+
+    .register-card{
+
+        padding:25px 18px;
+
+    }
+
+    .register-card h2{
+
+        font-size:24px;
+
+    }
+
+    .register-card > p{
+
+        font-size:14px;
+
+        margin-bottom:25px;
+
+    }
+
+    .input-group label{
+
+        font-size:14px;
+
+    }
+
+    .input-group input{
+
+        height:50px;
+
+        font-size:14px;
+
+    }
+
+    .register-btn-full,
+
+    .google-btn{
+
+        height:50px;
+
+        font-size:14px;
+
+    }
+
+    .divider{
+
+        margin:25px 0;
+
+    }
+
+    .login-link{
+
+        font-size:14px;
+
+    }
+
+}
+
+/* ==========================================
+   Validation Styles
+========================================== */
+
+.error-message{
+
+    display:block;
+
+    min-height:18px;
+
+    margin-top:6px;
+
+    color:#EF4444;
+
+    font-size:13px;
+
+    font-weight:500;
+
+}
+
+.input-error{
+
+    border:1px solid #EF4444 !important;
+
+}
+
+.input-success{
+
+    border:1px solid #10B981 !important;
+
+}
+
+/* ==========================================
+   Password Requirements - Dark Mode
+========================================== */
+
+body.dark .password-requirements {
+
+    background: #1E293B;
+
+    border-color: #334155;
+
+}
+
+body.dark .password-requirements h4 {
+
+    color: #F8FAFC;
+
+}
+
+body.dark .password-requirements li {
+
+    color: #CBD5E1;
+
+}
+
+/* ==========================================
+   Password Requirements
+========================================== */
+
+.password-requirements {
+
+    margin-top: 20px;
+    padding: 15px 18px;
+
+    background: #F8FAFC;
+
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+
+}
+
+.password-requirements h4 {
+
+    font-size: 15px;
+    font-weight: 600;
+
+    margin-bottom: 12px;
+
+    color: var(--text-color);
+
+}
+
+.password-requirements ul {
+
+    list-style: none;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+.password-requirements li {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 14px;
+
+    color: #6B7280;
+
+    transition: 0.3s ease;
+
+}
+
+.password-requirements li i {
+
+    width: 18px;
+
+    color: #EF4444;
+
+}
+
+/* Valid Requirement */
+
+.password-requirements li.valid {
+
+    color: #10B981;
+
+}
+
+.password-requirements li.valid i {
+
+    color: #10B981;
+
+}

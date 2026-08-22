@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Queue | ApplyAI</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/profile.css"> <!-- Reuse card layouts and form spacing -->
+    <link rel="stylesheet" href="../css/dark-theme.css">
+    <style>
+        /* ── Main Layout ── */
+        .review-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 25px;
+            margin-top: 30px;
+            align-items: start; /* prevents right panel from stretching */
+        }
+
+        .review-layout > * { min-width: 0; }
+
+        @media (max-width: 1024px) {
+            .review-layout { grid-template-columns: 1fr; }
+        }
+
+        /* ── Left Queue Panel ── */
+        .queue-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: calc(100vh - 160px);
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        /* ── Right Detail Card — pinned, never shifts ── */
+        .review-detail-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            position: sticky;
+            top: 20px;
+            align-self: start;
+        }
+
+        /* ── Queue Items ── */
+        .queue-item {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .queue-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 6px 20px rgba(37,99,235,0.1);
+        }
+
+        .queue-item.active {
+            border-left: 4px solid var(--primary);
+            background: linear-gradient(135deg, #F0F4FF 0%, #F8FAFC 100%);
+            box-shadow: 0 4px 16px rgba(37,99,235,0.12);
+        }
+
+        .queue-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .queue-item-header h4 {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+            line-height: 1.4;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .company-name {
+            font-size: 0.83rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .location-text {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ── Match Badges — colour-coded by score ── */
+        .match-badge,
+        .detail-match-tag {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .detail-match-tag {
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            align-self: flex-start;
+        }
+
+        /* Green ≥ 80 */
+        .match-high { background: #DCFCE7; color: #16A34A; }
+        /* Amber 60–79 */
+        .match-mid  { background: #FEF9C3; color: #CA8A04; }
+        /* Red < 60 */
+        .match-low  { background: #FEE2E2; color: #DC2626; }
+
+        body.dark .match-high { background: rgba(22,163,74,0.2);  color: #4ADE80; }
+        body.dark .match-mid  { background: rgba(202,138,4,0.2);  color: #FDE047; }
+        body.dark .match-low  { background: rgba(220,38,38,0.2);  color: #F87171; }
+
+        /* ── Detail Header ── */
+        .detail-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .detail-title h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+
+        .detail-title p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        /* ── Two-column info grid — always stable ── */
+        .split-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .split-detail-grid > * { min-width: 0; }
+
+        @media (max-width: 768px) {
+            .split-detail-grid { grid-template-columns: 1fr; }
+        }
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .info-block h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-item {
+            background: #F8FAFC;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copy-text-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .copy-label {
+            font-size: 0.68rem;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-val {
+            font-size: 0.85rem;
+            color: var(--text);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .copy-action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 0.95rem;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .copy-action-btn:hover { background: #EEF2FF; }
+
+        /* ── Action Footer — two clear rows ── */
+        .action-footer {
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-btns-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 2px;
+        }
+
+        .action-btns-row::-webkit-scrollbar {
+            height: 3px;
+        }
+        .action-btns-row::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .portal-btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 9px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .portal-btn:hover {
+            filter: brightness(1.12);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+        }
+
+        .complete-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .skip-btn {
+            background: #F1F5F9;
+            color: #475569;
+            border: 1px solid var(--border);
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .skip-btn:hover { background: #E2E8F0; }
+
+        .applied-btn {
+            background: var(--success);
+            color: var(--white);
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.25s;
+        }
+
+        .applied-btn:hover { background: #16a34a; transform: translateY(-1px); }
+
+        .not-interested-btn {
+            background: #EF4444;
+            color: var(--white);
+            border: none;
+            padding: 9px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.25s;
+        }
+
+        .not-interested-btn:hover { background: #DC2626; transform: translateY(-1px); }
+
+        /* ── Empty Queue Card ── */
+        .empty-queue-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 70px 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            text-align: center;
+            max-width: 520px;
+            margin: 60px auto;
+        }
+
+        .empty-queue-card i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .empty-queue-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .empty-queue-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+        }
+
+        .dashboard-redirect-btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-block;
+            transition: all 0.25s;
+        }
+
+        .dashboard-redirect-btn:hover { filter: brightness(1.1); }
+
+        /* ── Skeleton Loading Shimmer ── */
+        @keyframes shimmer {
+            0%   { background-position: -600px 0; }
+            100% { background-position: 600px 0; }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+            background-size: 1200px 100%;
+            animation: shimmer 1.5s infinite linear;
+            border-radius: 8px;
+        }
+
+        .skeleton-title { height: 28px; width: 55%; margin-bottom: 10px; }
+        .skeleton-sub   { height: 16px; width: 38%; }
+        .skeleton-row   { height: 48px; border-radius: 8px; }
+
+        body.dark .skeleton {
+            background: linear-gradient(90deg, #1F2937 25%, #374151 50%, #1F2937 75%);
+            background-size: 1200px 100%;
+        }
+
+        /* ── Dark Mode ── */
+        body.dark .queue-item,
+        body.dark .review-detail-card,
+        body.dark .empty-queue-card {
+            background: #1F2937;
+            border-color: #374151;
+        }
+
+        body.dark .queue-item.active {
+            background: linear-gradient(135deg, #1a2a4a 0%, #111827 100%);
+            border-color: var(--primary);
+        }
+
+        body.dark .queue-item h4,
+        body.dark .detail-title h2 {
+            color: #F9FAFB;
+        }
+
+        body.dark .company-name { color: #D1D5DB; }
+
+        body.dark .copy-item {
+            background: #111827;
+            border-color: #374151;
+        }
+
+        body.dark .copy-val { color: #F9FAFB; }
+
+        body.dark .skip-btn {
+            background: #374151;
+            color: #F9FAFB;
+            border-color: #4B5563;
+        }
+
+        body.dark .skip-btn:hover { background: #4B5563; }
+
+        body.dark .copy-action-btn:hover { background: rgba(99,102,241,0.2); }
+
+        body.dark .detail-header,
+        body.dark .action-footer { border-color: #374151; }
+
+        body.dark .info-block h4 { color: #818CF8; }
+
+        /* ── Simulator Modal Dark Mode ── */
+        body.dark .simulator-card {
+            background: #1F2937 !important;
+            border-color: #374151 !important;
+            color: #F9FAFB !important;
+        }
+        body.dark #simulatedForm input,
+        body.dark #simulatedForm textarea {
+            background: #111827 !important;
+            border-color: #374151 !important;
+            color: #F9FAFB !important;
+        }
+        body.dark #simResumeBox {
+            background: #111827 !important;
+            border-color: #374151 !important;
+        }
+        body.dark #simBanner {
+            background: #1E3A8A !important;
+            color: #EFF6FF !important;
+            border-color: var(--primary) !important;
+        }
+        .sim-field-group.active {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.15) !important;
+            background: rgba(37,99,235,0.02) !important;
+        }
+        body.dark .sim-field-group.active {
+            background: rgba(37,99,235,0.05) !important;
+        }
+    </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- ==========================
+             Sidebar
+        =========================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-briefcase"></i>
+                <h2>ApplyAI</h2>
+            </div>
+
+            <nav>
+                <ul>
+                    <li>
+                        <a href="./dashboard.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./applications.html">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span>Applications</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./profile.html">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./preferences.html">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>Preferences</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="./review.html">
+                            <i class="fa-solid fa-star"></i>
+                            <span>Review</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="logout">
+                <a href="./login.html" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ==========================
+             Main Content
+        =========================== -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Review Queue</h1>
+                    <p>Review and submit pre-filled applications that require manual steps.</p>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-actions">
+                        <!-- Notification -->
+                        <div class="notification-wrapper" style="position: relative; display: flex; align-items: center;">
+                            <button class="icon-btn" id="notificationBtn" aria-label="Notifications" style="position: relative;">
+                                <i class="fa-regular fa-bell"></i>
+                                <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
+                            </button>
+                            <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+                                <div class="dropdown-header">
+                                    <h3>Notifications</h3>
+                                    <button id="markAllReadBtn">Mark all read</button>
+                                </div>
+                                <div class="dropdown-content" id="notificationList">
+                                    <!-- Dynamic notifications -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Display -->
+                        <div class="profile">
+                            <div class="profile-avatar" id="profileAvatar">U</div>
+                            <div class="profile-info">
+                                <h4>Welcome</h4>
+                                <span id="profileName">User</span>
+                            </div>
+                        </div>
+
+                        <!-- Theme Toggle Button -->
+                        <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                            <i class="fa-solid fa-sun sun-icon"></i>
+                            <i class="fa-solid fa-moon moon-icon"></i>
+                        </button>
+
+                        <!-- Mobile Menu -->
+                        <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Queue Layout -->
+            <div id="queueContainer" class="review-layout">
+                <!-- Left: Queue Sidebar list -->
+                <div class="queue-panel" id="queueList">
+                    <!-- Queue items populated dynamically -->
+                </div>
+
+                <!-- Right: Active item details + copy board -->
+                <div class="review-detail-card" id="detailCard">
+                    <!-- Skeleton shown while JS loads -->
+                    <div id="detailSkeleton">
+                        <div class="skeleton skeleton-title"></div>
+                        <div class="skeleton skeleton-sub"></div>
+                        <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+                            <div class="skeleton skeleton-row"></div>
+                            <div class="skeleton skeleton-row"></div>
+                            <div class="skeleton skeleton-row"></div>
+                        </div>
+                    </div>
+
+                    <!-- Real content shown after data loads -->
+                    <div id="detailContent" style="display:none;">
+                    <div class="detail-header">
+                        <div class="detail-title">
+                            <h2 id="detRole"></h2>
+                            <p><span id="detCompany" style="font-weight: 600;"></span> &bull; <span id="detLocation"></span></p>
+                        </div>
+                        <div class="detail-match-tag" id="detMatch"></div>
+                    </div>
+
+                    <div class="skills-match-diagnostics" id="skillsMatchDiagnostics" style="border-top: 1px solid var(--border); padding-top: 15px; display: none;">
+                        <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <i class="fa-solid fa-layer-group" style="color: var(--primary);"></i> Skill Match Details
+                        </h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+                                <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-light); width: 80px;">Matched:</span>
+                                <div id="detMatchedSkills" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+                                <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-light); width: 80px;">Missing:</span>
+                                <div id="detMissingSkills" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="split-detail-grid">
+                        <!-- Left inside: Job Meta Details -->
+                        <div class="info-block">
+                            <h4><i class="fa-solid fa-circle-info"></i> Application Details</h4>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Work Mode</span>
+                                    <span class="copy-val" id="detWorkMode">Onsite</span>
+                                </div>
+                            </div>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Job Type</span>
+                                    <span class="copy-val" id="detType">Full-time</span>
+                                </div>
+                            </div>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Expected Salary</span>
+                                    <span class="copy-val" id="detSalary">30 LPA</span>
+                                </div>
+                            </div>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Original Portal Link</span>
+                                    <span class="copy-val" id="detLink">https://google.com/careers</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right inside: Copy board -->
+                        <div class="info-block" id="copyBoard">
+                            <h4><i class="fa-solid fa-clipboard"></i> Copy Board</h4>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Full Name</span>
+                                    <span class="copy-val" id="copyName">John Doe</span>
+                                </div>
+                                <button class="copy-action-btn" onclick="copyText('copyName')"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Phone</span>
+                                    <span class="copy-val" id="copyPhone">+1 555 1234</span>
+                                </div>
+                                <button class="copy-action-btn" onclick="copyText('copyPhone')"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Education</span>
+                                    <span class="copy-val" id="copyEdu">B.Tech CS</span>
+                                </div>
+                                <button class="copy-action-btn" onclick="copyText('copyEdu')"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Skills</span>
+                                    <span class="copy-val" id="copySkills">React, JS</span>
+                                </div>
+                                <button class="copy-action-btn" onclick="copyText('copySkills')"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">LinkedIn</span>
+                                    <span class="copy-val" id="copyLinkedin">linkedin.com</span>
+                                </div>
+                                <button class="copy-action-btn" onclick="copyText('copyLinkedin')"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <div class="copy-item">
+                                <div class="copy-text-container">
+                                    <span class="copy-label">Resume Link</span>
+                                    <span class="copy-val" id="copyResume">resume.pdf</span>
+                                </div>
+                                <button class="copy-action-btn" onclick="copyText('copyResume')"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-footer">
+                        <!-- Row 1: Action buttons -->
+                        <div class="action-btns-row">
+                            <a href="#" target="_blank" class="portal-btn" id="openPortalBtn">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Portal
+                            </a>
+                            <button class="portal-btn" id="autofillBtn" style="background: var(--success);">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Auto-fill
+                            </button>
+                            <button class="portal-btn" id="coverLetterBtn" style="background: #D97706;">
+                                <i class="fa-solid fa-file-invoice"></i> Cover Letter
+                            </button>
+                            <button class="portal-btn" id="resumeAdvisorBtn" style="background: #0D9488;">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Tailor Resume
+                            </button>
+                            <button class="portal-btn" id="interviewPrepBtn" style="background: #6366F1;">
+                                <i class="fa-solid fa-graduation-cap"></i> Interview Prep
+                            </button>
+                        </div>
+                        <!-- Row 2: Completion actions -->
+                        <div class="complete-actions">
+                            <button class="not-interested-btn" id="notInterestedBtn">
+                                <i class="fa-solid fa-ban"></i> Not Interested
+                            </button>
+                            <button class="skip-btn" id="skipBtn">Skip Role</button>
+                            <button class="applied-btn" id="markAppliedBtn">
+                                <i class="fa-solid fa-check"></i> Mark as Applied
+                            </button>
+                        </div>
+                    </div>
+                    </div><!-- end detailContent -->
+                </div>
+            </div>
+
+            <!-- Empty Queue Container -->
+            <div id="emptyQueueContainer" class="empty-queue-card" style="display: none;">
+                <i class="fa-solid fa-circle-check"></i>
+                <h3>All Caught Up!</h3>
+                <p>There are no job applications pending manual review right now.</p>
+                <a href="./dashboard.html" class="dashboard-redirect-btn">Return to Dashboard</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notifications Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Greenhouse Form Simulator Modal -->
+    <div id="simulatorModal" class="simulator-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+        <div class="simulator-card" style="background: var(--white); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); max-width: 650px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative; color: var(--text);">
+            <!-- Modal Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-robot" style="font-size: 1.5rem; color: var(--primary);"></i>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin: 0;">Greenhouse Application Simulator</h3>
+                </div>
+                <button id="closeSimulatorBtn" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-light);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Simulation Banner -->
+            <div id="simBanner" style="background: #EFF6FF; border-left: 4px solid var(--primary); padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 0.85rem; color: #1E3A8A; display: flex; align-items: center; justify-content: space-between;">
+                <div style="text-align: left;">
+                    <strong>Target:</strong> <span id="simRole">Frontend Dev</span> at <span id="simCompany">Company</span>
+                </div>
+                <button id="startSimBtn" style="background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-solid fa-play"></i> Start Auto-fill
+                </button>
+            </div>
+
+            <!-- Simulated Form -->
+            <form id="simulatedForm" style="display: flex; flex-direction: column; gap: 15px; text-align: left;">
+                <!-- Full Name -->
+                <div class="sim-field-group" id="groupSimName" style="transition: all 0.3s; padding: 10px; border: 1.5px solid transparent; border-radius: 8px;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Full Name *</label>
+                    <input type="text" id="simName" readonly style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: #F8FAFC; box-sizing: border-box;">
+                </div>
+                
+                <!-- Email -->
+                <div class="sim-field-group" id="groupSimEmail" style="transition: all 0.3s; padding: 10px; border: 1.5px solid transparent; border-radius: 8px;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Email Address *</label>
+                    <input type="email" id="simEmail" readonly style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: #F8FAFC; box-sizing: border-box;">
+                </div>
+
+                <!-- Phone -->
+                <div class="sim-field-group" id="groupSimPhone" style="transition: all 0.3s; padding: 10px; border: 1.5px solid transparent; border-radius: 8px;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Phone Number *</label>
+                    <input type="text" id="simPhone" readonly style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: #F8FAFC; box-sizing: border-box;">
+                </div>
+
+                <!-- Resume Upload Zone -->
+                <div class="sim-field-group" id="groupSimResume" style="transition: all 0.3s; padding: 10px; border: 1.5px solid transparent; border-radius: 8px;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Attach Resume *</label>
+                    <div id="simResumeBox" style="border: 1.5px dashed var(--border); padding: 15px; border-radius: 8px; text-align: center; color: var(--text-light); font-size: 0.85rem; background: #F8FAFC;">
+                        <i class="fa-regular fa-file-pdf" style="font-size: 1.5rem; margin-bottom: 5px; color: var(--primary);"></i>
+                        <div id="simResumeText">Resume file not selected</div>
+                    </div>
+                </div>
+
+                <!-- LinkedIn URL -->
+                <div class="sim-field-group" id="groupSimLinkedin" style="transition: all 0.3s; padding: 10px; border: 1.5px solid transparent; border-radius: 8px;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">LinkedIn Profile URL</label>
+                    <input type="text" id="simLinkedin" readonly style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: #F8FAFC; box-sizing: border-box;">
+                </div>
+
+                <!-- Work Auth -->
+                <div class="sim-field-group" id="groupSimAuth" style="transition: all 0.3s; padding: 10px; border: 1.5px solid transparent; border-radius: 8px; display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.85rem; font-weight: 600;">Are you authorized to work in the country of this job? *</label>
+                    <div style="display: flex; gap: 15px; font-size: 0.9rem;">
+                        <label><input type="radio" name="simAuth" id="simAuthYes" disabled> Yes</label>
+                        <label><input type="radio" name="simAuth" id="simAuthNo" disabled> No</label>
+                    </div>
+                </div>
+
+                <!-- Sponsorship -->
+                <div class="sim-field-group" id="groupSimSpons" style="transition: all 0.3s; padding: 10px; border: 1.5px solid transparent; border-radius: 8px; display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.85rem; font-weight: 600;">Will you now or in the future require sponsorship for employment visa status? *</label>
+                    <div style="display: flex; gap: 15px; font-size: 0.9rem;">
+                        <label><input type="radio" name="simSpons" id="simSponsYes" disabled> Yes</label>
+                        <label><input type="radio" name="simSpons" id="simSponsNo" disabled> No</label>
+                    </div>
+                </div>
+
+                <!-- Cover Letter / Custom written Q -->
+                <div class="sim-field-group" id="groupSimQ" style="transition: all 0.3s; padding: 10px; border: 1.5px solid transparent; border-radius: 8px;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px;">Why are you interested in this position? *</label>
+                    <textarea id="simQ" readonly rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; background: #F8FAFC; box-sizing: border-box; resize: none; font-size: 0.85rem;"></textarea>
+                </div>
+
+                <!-- Simulated Submit -->
+                <div style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 10px; display: flex; justify-content: flex-end;">
+                    <button type="submit" id="simSubmitBtn" disabled style="background: var(--success); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cover Letter Generator Modal -->
+    <div id="coverLetterModal" class="simulator-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+        <div class="simulator-card" style="background: var(--white); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); max-width: 650px; width: 100%; padding: 30px; position: relative; color: var(--text);">
+            <!-- Modal Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-file-invoice" style="font-size: 1.5rem; color: #D97706;"></i>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin: 0;">AI Cover Letter Generator</h3>
+                </div>
+                <button id="closeCoverLetterBtn" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-light);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Loader / Letter Text Area -->
+            <div id="coverLetterContentContainer" style="display: flex; flex-direction: column; gap: 15px;">
+                <div id="coverLetterLoader" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 40px 0; color: var(--text-light);">
+                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: #D97706;"></i>
+                    <span>AI is scanning resume and drafting cover letter...</span>
+                </div>
+                
+                <div id="coverLetterArea" style="display: none; flex-direction: column; gap: 15px; text-align: left;">
+                    <textarea id="coverLetterText" rows="12" style="width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; line-height: 1.5; resize: vertical; box-sizing: border-box; background: #F8FAFC; color: var(--text);"></textarea>
+                    
+                    <div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                        <button id="copyCoverLetterBtn" style="background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;">
+                            <i class="fa-regular fa-copy"></i> Copy to Clipboard
+                        </button>
+                        <button id="downloadCoverLetterBtn" style="background: var(--success); color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;">
+                            <i class="fa-solid fa-file-arrow-down"></i> Download as Text
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resume Advisor Modal -->
+    <div id="resumeAdvisorModal" class="simulator-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+        <div class="simulator-card" style="background: var(--white); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); max-width: 650px; width: 100%; padding: 30px; position: relative; color: var(--text);">
+            <!-- Modal Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 1.5rem; color: #0D9488;"></i>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin: 0;">ATS Resume Advisor</h3>
+                </div>
+                <button id="closeResumeAdvisorBtn" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-light);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Loader / Advisor Panel -->
+            <div id="resumeAdvisorContentContainer" style="display: flex; flex-direction: column; gap: 15px;">
+                <div id="resumeAdvisorLoader" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 40px 0; color: var(--text-light);">
+                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: #0D9488;"></i>
+                    <span>AI is scanning resume and comparing against job listing...</span>
+                </div>
+                
+                <div id="resumeAdvisorArea" style="display: none; flex-direction: column; gap: 20px; text-align: left;">
+                    <!-- Match Score Ring -->
+                    <div style="display: flex; align-items: center; gap: 20px; background: #F8FAFC; padding: 15px; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="position: relative; width: 70px; height: 70px; border-radius: 50%; display: flex; justify-content: center; align-items: center;" id="advisorScoreRing">
+                            <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--white); display: flex; justify-content: center; align-items: center; font-weight: 700; font-size: 1.2rem; color: #0D9488;" id="advisorScoreVal">0%</div>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 5px 0; font-weight: 700; font-size: 1rem;">ATS Keyword Score</h4>
+                            <p style="margin: 0; font-size: 0.85rem; color: var(--text-light);">Matches the frequency of keywords against this target job description.</p>
+                        </div>
+                    </div>
+
+                    <!-- Missing Keywords Checklist -->
+                    <div>
+                        <h4 style="margin: 0 0 10px 0; font-weight: 700; font-size: 0.95rem; color: var(--text);"><i class="fa-solid fa-triangle-exclamation" style="color: #EF4444; margin-right: 5px;"></i> Missing Keywords (ATS Checklist)</h4>
+                        <div id="advisorKeywordsCloud" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <!-- Dynamic checklist tags -->
+                        </div>
+                    </div>
+
+                    <!-- Actionable Suggestions -->
+                    <div>
+                        <h4 style="margin: 0 0 10px 0; font-weight: 700; font-size: 0.95rem; color: var(--text);"><i class="fa-solid fa-lightbulb" style="color: #F59E0B; margin-right: 5px;"></i> Optimization Recommendations</h4>
+                        <ul id="advisorSuggestionsList" style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem; line-height: 1.4;">
+                            <!-- Dynamic suggestions -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interview Prep Modal -->
+    <div id="interviewPrepModal" class="simulator-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+        <div class="simulator-card" style="background: var(--white); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); max-width: 750px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 30px; position: relative; color: var(--text);">
+            <!-- Modal Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-graduation-cap" style="font-size: 1.5rem; color: #6366F1;"></i>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin: 0;">AI Mock Interview Assistant</h3>
+                </div>
+                <button id="closeInterviewPrepBtn" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text-light);"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Loader / Q&A Accordion Panel -->
+            <div id="interviewPrepContentContainer" style="display: flex; flex-direction: column; gap: 15px;">
+                <div id="interviewPrepLoader" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 40px 0; color: var(--text-light);">
+                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: #6366F1;"></i>
+                    <span>AI is generating company-specific interview questions & answers...</span>
+                </div>
+                
+                <div id="interviewPrepArea" style="display: none; flex-direction: column; gap: 15px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <span style="font-size: 0.85rem; color: var(--text-light);"><i class="fa-solid fa-circle-info" style="color: #6366F1;"></i> Click any question to expand/collapse sample answer.</span>
+                        <button id="copyInterviewPrepBtn" style="background: #6366F1; color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85rem;">
+                            <i class="fa-regular fa-copy"></i> Copy Guide
+                        </button>
+                    </div>
+
+                    <!-- Accordion list -->
+                    <div id="interviewPrepAccordion" style="display: flex; flex-direction: column; gap: 12px;">
+                        <!-- Dynamic Q&A Cards -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/avatar_v3.js"></script>
+    <script src="../js/review.js?v=4"></script>
+</body>
+
+</html>

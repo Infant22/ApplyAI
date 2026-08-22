@@ -1,0 +1,423 @@
+/* Applications Tracker Page CSS */
+
+.toolbar-container {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.search-filter-box {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+}
+
+.search-filter-box i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+.search-filter-box input {
+    width: 100%;
+    padding: 12px 16px 12px 45px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #F8FAFC;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.search-filter-box input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.filter-dropdowns {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+.filter-group select {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #F8FAFC;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Table Style customisations */
+.table-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.applications-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.applications-table th, .applications-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.applications-table th {
+    background: #F8FAFC;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.applications-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Badges styling */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.status-badge.applied {
+    background: #DBEAFE;
+    color: var(--primary);
+}
+
+.status-badge.interview {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+.status-badge.selected {
+    background: #D1FAE5;
+    color: var(--success);
+}
+
+.status-badge.rejected {
+    background: #FEE2E2;
+    color: var(--danger);
+}
+
+/* Table Action Buttons */
+.table-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-select {
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--text);
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.status-select:focus {
+    border-color: var(--primary);
+}
+
+.delete-action-btn {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.delete-action-btn:hover {
+    background: #FEE2E2;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px !important;
+    color: var(--text-light);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* Toast alert notification */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 16px 24px;
+    background: #1E293B;
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transform: translateY(150px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toast.show {
+    transform: translateY(0);
+}
+
+.toast.success {
+    border-left: 4px solid var(--success);
+}
+
+.toast.error {
+    border-left: 4px solid var(--danger);
+}
+
+.toast.warning {
+    border-left: 4px solid var(--warning);
+}
+
+/* Dark Theme Extensions */
+body.dark .toolbar-container, body.dark .table-card {
+    background: #1F2937;
+    border-color: #374151;
+}
+
+body.dark .search-filter-box input, body.dark .filter-group select, body.dark .status-select {
+    background: #111827;
+    border-color: #374151;
+    color: #F9FAFB;
+}
+
+body.dark .search-filter-box input:focus, body.dark .filter-group select:focus {
+    background: #1F2937;
+}
+
+body.dark .applications-table th {
+    background: #111827;
+    color: #9CA3AF;
+}
+
+body.dark .applications-table td {
+    border-color: #374151;
+    color: #E5E7EB;
+}
+
+body.dark .delete-action-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+/* Navigation topbar and theme toggle alignment */
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.theme-toggle i {
+    font-size: 16px;
+    color: #94A3B8;
+    transition: color 0.3s;
+}
+
+body:not(.dark) .theme-toggle .fa-sun {
+    color: #F59E0B;
+}
+
+body.dark .theme-toggle .fa-moon {
+    color: #FACC15;
+}
+
+.toggle-track {
+    width: 44px;
+    height: 22px;
+    background: #CBD5E1;
+    border-radius: 30px;
+    position: relative;
+    transition: background 0.3s;
+}
+
+.toggle-thumb {
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
+}
+
+.theme-toggle:hover .toggle-track {
+    background: #A5B4FC;
+}
+
+body.dark .toggle-track {
+    background: #3B82F6;
+}
+
+body.dark .toggle-thumb {
+    transform: translateX(22px);
+}
+
+/* ==========================================
+   Global Responsiveness Overrides
+   ========================================== */
+
+/* Main layout grid adjustments */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 270px !important;
+        height: 100vh !important;
+        transform: translateX(-100%) !important;
+        transition: transform 0.3s ease !important;
+        z-index: 1000 !important;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0) !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 20px !important;
+    }
+    
+    .menu-toggle {
+        display: flex !important;
+    }
+}
+
+/* Dashboard Grid column wrap */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+}
+
+/* Statistics container columns */
+@media (max-width: 1200px) {
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-container {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .stat-card {
+        padding: 15px !important;
+    }
+}
+
+/* Table scroll containment */
+.table-container {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+table {
+    width: 100% !important;
+}
+
+/* Welcome banner text and layout */
+@media (max-width: 768px) {
+    .welcome-banner {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding: 20px !important;
+    }
+    
+    .welcome-text h2 {
+        font-size: 24px !important;
+    }
+    
+    .add-job-btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}

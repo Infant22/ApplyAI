@@ -1,0 +1,285 @@
+/* ==========================================
+   ApplyAI Global Dark Theme for Dashboard
+   ========================================== */
+
+body.dark {
+    --text: #F8FAFC;
+    --text-light: #94A3B8;
+    --border: #334155;
+    --card-bg: #1E293B;
+    background: #0F172A !important;
+    color: #F8FAFC !important;
+    transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* Sidebar */
+body.dark .sidebar {
+    background: #030712 !important; /* Extra dark sidebar */
+    border-right: 1px solid #1F2937;
+}
+
+body.dark .sidebar li a {
+    color: #9CA3AF;
+}
+
+body.dark .sidebar li:hover a {
+    color: #FFFFFF;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+body.dark .sidebar li.active a {
+    background: #2563EB !important;
+    color: #FFFFFF !important;
+}
+
+/* Topbar Header */
+body.dark .topbar-left h1 {
+    color: #F8FAFC !important;
+}
+
+body.dark .topbar-left p {
+    color: #9CA3AF !important;
+}
+
+body.dark .search-box {
+    background: #1E293B !important;
+    border: 1px solid #374151 !important;
+}
+
+body.dark .search-box input {
+    background: transparent !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .icon-btn, 
+body.dark .menu-toggle {
+    background: #1E293B !important;
+    border: 1px solid #374151 !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .icon-btn i,
+body.dark .menu-toggle i {
+    color: #F8FAFC !important;
+}
+
+body.dark .profile {
+    background: #1E293B !important;
+    border: 1px solid #374151 !important;
+}
+
+body.dark .profile-info h4 {
+    color: #F8FAFC !important;
+}
+
+body.dark .profile-info span {
+    color: #9CA3AF !important;
+}
+
+/* Dashboard Statistics Cards */
+body.dark .stat-card {
+    background: #1E293B !important;
+    border: 1px solid #374151 !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .stat-info h3 {
+    color: #9CA3AF !important;
+}
+
+body.dark .stat-info h2 {
+    color: #F8FAFC !important;
+}
+
+/* Main Dashboard Cards */
+body.dark .dashboard-card {
+    background: #1E293B !important;
+    border: 1px solid #374151 !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .card-header h3 {
+    color: #F8FAFC !important;
+}
+
+body.dark .card-header {
+    border-bottom: 1px solid #374151 !important;
+}
+
+/* Tables & Recent Applications */
+body.dark table th {
+    background: #111827 !important;
+    color: #9CA3AF !important;
+    border-bottom: 1px solid #374151 !important;
+}
+
+body.dark table td {
+    color: #E5E7EB !important;
+    border-bottom: 1px solid #374151 !important;
+}
+
+body.dark .empty-state {
+    color: #9CA3AF !important;
+}
+
+/* Modals */
+body.dark .job-modal {
+    background: #1E293B !important;
+    border: 1px solid #374151 !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .modal-header {
+    border-bottom: 1px solid #374151 !important;
+}
+
+body.dark .modal-header h2 {
+    color: #F8FAFC !important;
+}
+
+body.dark .form-group label {
+    color: #E5E7EB !important;
+}
+
+body.dark .form-group input, 
+body.dark .form-group select, 
+body.dark .form-group textarea {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .form-group input:focus, 
+body.dark .form-group select:focus, 
+body.dark .form-group textarea:focus {
+    background: #1E293B !important;
+    border-color: #2563EB !important;
+}
+
+body.dark .cancel-btn {
+    background: #374151 !important;
+    color: #F9FAFB !important;
+    border: 1px solid #4B5563 !important;
+}
+
+body.dark .cancel-btn:hover {
+    background: #4B5563 !important;
+}
+
+/* Profile and Preferences subpages */
+body.dark .profile-card {
+    background: #1E293B !important;
+    border: 1px solid #374151 !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .profile-card h3 {
+    border-bottom: 1px solid #374151 !important;
+}
+
+body.dark .resume-status {
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
+}
+
+body.dark .file-drop-area {
+    background: #111827 !important;
+    border: 2px dashed #374151 !important;
+}
+
+body.dark .file-drop-area p {
+    color: #E5E7EB !important;
+}
+
+body.dark .upload-btn {
+    background: #374151 !important;
+    color: #E5E7EB !important;
+    border-color: #4B5563 !important;
+}
+
+body.dark .upload-btn:not(:disabled) {
+    background: #16A34A !important;
+    border-color: #16a34a !important;
+    color: #FFFFFF !important;
+}
+
+/* Review subpage */
+body.dark .queue-item {
+    background: #1E293B !important;
+    border-color: #374151 !important;
+}
+
+body.dark .queue-item h4 {
+    color: #F8FAFC !important;
+}
+
+body.dark .queue-item.active {
+    background: #111827 !important;
+}
+
+body.dark .review-detail-card {
+    background: #1E293B !important;
+    border-color: #374151 !important;
+}
+
+body.dark .detail-header {
+    border-bottom: 1px solid #374151 !important;
+}
+
+body.dark .detail-title h2 {
+    color: #F8FAFC !important;
+}
+
+body.dark .copy-item {
+    background: #111827 !important;
+    border-color: #374151 !important;
+}
+
+body.dark .copy-val {
+    color: #F8FAFC !important;
+}
+
+body.dark .skip-btn {
+    background: #374151 !important;
+    color: #E5E7EB !important;
+    border-color: #4B5563 !important;
+}
+
+body.dark .skip-btn:hover {
+    background: #4B5563 !important;
+}
+
+body.dark .action-footer {
+    border-top: 1px solid #374151 !important;
+}
+
+body.dark .empty-queue-card {
+    background: #1E293B !important;
+    border-color: #374151 !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .empty-queue-card h3 {
+    color: #F8FAFC !important;
+}
+
+/* Applications subpage */
+body.dark .toolbar-container {
+    background: #1E293B !important;
+    border-color: #374151 !important;
+}
+
+body.dark .table-card {
+    background: #1E293B !important;
+    border-color: #374151 !important;
+}
+
+body.dark .status-select {
+    background: #111827 !important;
+    border-color: #374151 !important;
+    color: #F8FAFC !important;
+}
+
+body.dark .delete-action-btn:hover {
+    background: rgba(239, 68, 68, 0.2) !important;
+}

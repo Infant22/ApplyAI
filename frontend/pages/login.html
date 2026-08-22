@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | ApplyAI</title>
+
+    <!-- Google Identity Services Client -->
+    <script src="https://accounts.google.com/gsi/client?onload=onGoogleLibraryLoad" async defer></script>
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/login.css">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Google Font -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+    <section class="login-page">
+
+        <div class="login-container">
+
+            <!-- Left Section -->
+
+            <div class="login-left">
+
+                <a href="../index.html"
+                   class="back-home">
+
+                    <i class="fas fa-arrow-left"></i>
+
+                    Back to Home
+
+                </a>
+
+                <a href="../index.html"
+                   class="logo">
+
+                    <h2>ApplyAI</h2>
+
+                </a>
+
+                <h1>Welcome Back 👋</h1>
+
+                <p>
+
+                    Sign in to continue your AI-powered job search,
+                    manage applications, and discover new opportunities.
+
+                </p>
+
+                <div class="login-illustration">
+
+                    <img src="../assets/images/login.svg"
+                         alt="Login Illustration">
+
+                </div>
+
+                <div class="login-features">
+
+                    <div class="feature">
+
+                        <i class="fas fa-robot"></i>
+
+                        <span>AI Powered Job Matching</span>
+
+                    </div>
+
+                    <div class="feature">
+
+                        <i class="fas fa-file-alt"></i>
+
+                        <span>Resume Analysis</span>
+
+                    </div>
+
+                    <div class="feature">
+
+                        <i class="fas fa-chart-line"></i>
+
+                        <span>Track Applications</span>
+
+                    </div>
+
+                    <div class="feature">
+
+                        <i class="fas fa-bell"></i>
+
+                        <span>Instant Job Alerts</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Right Section -->
+
+            <div class="login-right">
+
+                <div class="login-card">
+
+                    <h2>Sign In</h2>
+
+                    <p>Welcome back to ApplyAI.</p>
+
+                    <form id="loginForm">
+
+                        <!-- Email -->
+
+                        <div class="input-group">
+
+                            <label for="email">
+
+                                Email Address
+
+                            </label>
+
+                            <input type="email"
+                                   id="email"
+                                   placeholder="Enter your email">
+
+                            <small class="error-message"></small>
+
+                        </div>
+
+                        <!-- Password -->
+
+                        <div class="input-group">
+
+                            <label for="password">
+
+                                Password
+
+                            </label>
+
+                            <div class="password-field">
+
+                                <input type="password"
+                                       id="password"
+                                       placeholder="Enter your password">
+
+                                <i class="fas fa-eye toggle-password"></i>
+
+                            </div>
+
+                            <small class="error-message"></small>
+
+                        </div>
+
+                        <!-- Options -->
+
+                        <div class="login-options">
+
+                            <label class="remember-me">
+
+                                <input type="checkbox"
+                                       id="rememberMe">
+
+                                Remember Me
+
+                            </label>
+
+                            <a href="forgot-password.html"
+                               class="forgot-password">
+
+                                Forgot Password?
+
+                            </a>
+
+                        </div>
+
+                        <!-- Login Button -->
+
+                        <button type="submit"
+                                class="login-btn-full">
+
+                            Sign In
+
+                        </button>
+
+                    </form>
+
+                    <!-- Divider -->
+
+                    <div class="divider">
+
+                        <span>OR</span>
+
+                    </div>
+
+                    <!-- Google -->
+
+                    <div id="googleBtn" style="width:100%; display:flex; justify-content:center; margin-top:10px;"></div>
+
+                    <!-- Register -->
+
+                    <p class="register-link">
+
+                        Don't have an account?
+
+                        <a href="register.html">
+
+                            Create Account
+
+                        </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Theme -->
+
+    <script src="../js/config.js"></script>
+    <script src="../js/theme.js"></script>
+
+    <!-- Login -->
+
+    <script src="../js/login.js"></script>
+
+</body>
+
+</html>

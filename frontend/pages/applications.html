@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications | ApplyAI</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/applications.css">
+    <link rel="stylesheet" href="../css/dark-theme.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- ==========================
+             Sidebar
+        =========================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-briefcase"></i>
+                <h2>ApplyAI</h2>
+            </div>
+
+            <nav>
+                <ul>
+                    <li>
+                        <a href="./dashboard.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="./applications.html">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span>Applications</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./profile.html">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./preferences.html">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>Preferences</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./review.html">
+                            <i class="fa-solid fa-star"></i>
+                            <span>Review</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="logout">
+                <a href="./login.html" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ==========================
+             Main Content
+        =========================== -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Job Applications</h1>
+                    <p>Track, filter, and manage your job applications list.</p>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-actions">
+                        <!-- Notification -->
+                        <div class="notification-wrapper" style="position: relative; display: flex; align-items: center;">
+                            <button class="icon-btn" id="notificationBtn" aria-label="Notifications" style="position: relative;">
+                                <i class="fa-regular fa-bell"></i>
+                                <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
+                            </button>
+                            <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+                                <div class="dropdown-header">
+                                    <h3>Notifications</h3>
+                                    <button id="markAllReadBtn">Mark all read</button>
+                                </div>
+                                <div class="dropdown-content" id="notificationList">
+                                    <!-- Dynamic notifications -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Display -->
+                        <div class="profile">
+                            <div class="profile-avatar" id="profileAvatar">U</div>
+                            <div class="profile-info">
+                                <h4>Welcome</h4>
+                                <span id="profileName">User</span>
+                            </div>
+                        </div>
+
+                        <!-- Theme Toggle Button -->
+                        <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                            <i class="fa-solid fa-sun sun-icon"></i>
+                            <i class="fa-solid fa-moon moon-icon"></i>
+                        </button>
+
+                        <!-- Mobile Menu -->
+                        <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Search & Filters Toolbar -->
+            <section class="toolbar-container">
+                <div class="search-filter-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="appSearchInput" placeholder="Search by company or job title...">
+                </div>
+
+                <div class="filter-dropdowns">
+                    <div class="filter-group">
+                        <label for="statusFilter">Status</label>
+                        <select id="statusFilter">
+                            <option value="All">All Statuses</option>
+                            <option value="Applied">Applied</option>
+                            <option value="Interview">Interview</option>
+                            <option value="Selected">Selected</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Application Tracking Table -->
+            <section class="table-card">
+                <div class="table-container">
+                    <table class="applications-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Job Title</th>
+                                <th>Location</th>
+                                <th>Work Mode</th>
+                                <th>Type</th>
+                                <th>Applied Date</th>
+                                <th>Status</th>
+                                <th style="text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fullApplicationsTableBody">
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i class="fa-regular fa-folder-open"></i>
+                                    <p>Loading applications...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Slide-out Job Details Drawer -->
+    <div class="drawer-overlay" id="jobDrawer">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h3>Application Details</h3>
+                <button id="closeDrawerBtn" aria-label="Close details"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="drawer-body">
+                <div class="drawer-job-title-card">
+                    <h2 id="drawRole">Software Engineer</h2>
+                    <p><span id="drawCompany" style="font-weight: 600;">Coinbase</span> &bull; <span id="drawLocation">Remote</span></p>
+                    <div class="detail-match-tag" id="drawMatch">85% Match</div>
+                </div>
+
+                <div class="skills-match-diagnostics" id="drawSkillsDiagnostics">
+                    <h4>
+                        <i class="fa-solid fa-layer-group"></i> Skill Match Details
+                    </h4>
+                    <div class="skills-container">
+                        <div class="skills-group">
+                            <span class="skills-group-title">Matched Keywords:</span>
+                            <div id="drawMatchedSkills" class="skills-tags-container"></div>
+                        </div>
+                        <div class="skills-group">
+                            <span class="skills-group-title">Missing Keywords:</span>
+                            <div id="drawMissingSkills" class="skills-tags-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="split-detail-grid">
+                    <div class="info-block">
+                        <h4><i class="fa-solid fa-circle-info"></i> Details</h4>
+                        <div class="detail-item-box">
+                            <span class="detail-item-label">Work Mode</span>
+                            <span class="detail-item-val" id="drawWorkMode">Onsite</span>
+                        </div>
+                        <div class="detail-item-box">
+                            <span class="detail-item-label">Job Type</span>
+                            <span class="detail-item-val" id="drawType">Full-time</span>
+                        </div>
+                        <div class="detail-item-box">
+                            <span class="detail-item-label">Salary / Compensation</span>
+                            <span class="detail-item-val" id="drawSalary">30 LPA</span>
+                        </div>
+                        <div class="detail-item-box">
+                            <span class="detail-item-label">Original Portal Link</span>
+                            <a id="drawLink" href="#" target="_blank" class="detail-item-link">Open Job Board</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/avatar_v3.js"></script>
+    <script src="../js/applications.js?v=4"></script>
+</body>
+
+</html>

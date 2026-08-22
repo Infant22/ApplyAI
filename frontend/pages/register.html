@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Register | ApplyAI</title>
+
+    <!-- Google Identity Services Client -->
+    <script src="https://accounts.google.com/gsi/client?onload=onGoogleLibraryLoad" async defer></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/register.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <section class="register-page">
+      <div class="register-container">
+        <!-- Left Section -->
+
+        <div class="register-left">
+          <a href="../index.html" class="back-home">
+            <i class="fas fa-arrow-left"></i>
+
+            Back to Home
+          </a>
+
+          <a href="../index.html" class="logo">
+            <h2>ApplyAI</h2>
+          </a>
+
+          <h1>Create Your Account</h1>
+
+          <p>
+            Join thousands of job seekers using AI to discover better
+            opportunities, build stronger resumes, and land interviews faster.
+          </p>
+
+          <div class="register-illustration">
+            <img
+              src="../assets/images/register.svg"
+              alt="Register Illustration"
+            />
+          </div>
+
+          <div class="register-features">
+            <div class="feature">
+              <i class="fas fa-robot"></i>
+
+              <span>AI Powered Job Matching</span>
+            </div>
+
+            <div class="feature">
+              <i class="fas fa-file-alt"></i>
+
+              <span>Smart Resume Analysis</span>
+            </div>
+
+            <div class="feature">
+              <i class="fas fa-chart-line"></i>
+
+              <span>Track Applications Easily</span>
+            </div>
+
+            <div class="feature">
+              <i class="fas fa-bell"></i>
+
+              <span>Instant Job Notifications</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Section -->
+
+        <div class="register-right">
+          <div class="register-card">
+            <h2>Create Account</h2>
+
+            <p>Let's get you started.</p>
+
+            <form id="registerForm">
+              <!-- Full Name -->
+
+              <div class="input-group">
+                <label for="fullname">Full Name</label>
+
+                <input
+                  type="text"
+                  id="fullname"
+                  placeholder="Enter your full name"
+                />
+
+                <small class="error-message"></small>
+              </div>
+
+              <!-- Email -->
+
+              <div class="input-group">
+                <label for="email">Email Address</label>
+
+                <input type="email" id="email" placeholder="Enter your email" />
+
+                <small class="error-message"></small>
+              </div>
+
+              <!-- Password -->
+
+              <div class="input-group">
+                <label for="password">Password</label>
+
+                <div class="password-field">
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="Create a password"
+                  />
+
+                  <i class="fas fa-eye toggle-password"></i>
+                </div>
+
+                <small class="error-message"></small>
+              </div>
+
+              <!-- Confirm Password -->
+
+              <div class="input-group">
+                <label for="confirmPassword">Confirm Password</label>
+
+                <div class="password-field">
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm password"
+                  />
+
+                  <i class="fas fa-eye toggle-password"></i>
+                </div>
+
+                <small class="error-message"></small>
+              </div>
+
+              <!-- Password Strength -->
+
+              <div class="password-strength">
+                <div class="strength-bar">
+                  <span id="strengthBar"></span>
+                </div>
+
+                <small id="strengthText"> Password Strength </small>
+              </div>
+
+              <!-- Password Requirements -->
+
+<div class="password-requirements">
+
+    <h4>Password Requirements</h4>
+
+    <ul>
+
+        <li id="lengthCheck">
+            <i class="fas fa-times"></i>
+            At least 8 characters
+        </li>
+
+        <li id="uppercaseCheck">
+            <i class="fas fa-times"></i>
+            One uppercase letter
+        </li>
+
+        <li id="lowercaseCheck">
+            <i class="fas fa-times"></i>
+            One lowercase letter
+        </li>
+
+        <li id="numberCheck">
+            <i class="fas fa-times"></i>
+            One number
+        </li>
+
+        <li id="specialCheck">
+            <i class="fas fa-times"></i>
+            One special character
+        </li>
+
+    </ul>
+
+</div>
+              <!-- Terms -->
+
+              <div class="terms">
+                <label>
+                  <input type="checkbox" id="terms" />
+
+                  I agree to the
+                  <a href="#">Terms of Service</a>
+                  &
+                  <a href="#">Privacy Policy</a>
+                </label>
+
+                <small class="error-message"></small>
+              </div>
+
+              <!-- Register Button -->
+
+              <button type="submit" class="register-btn-full">
+                Create Account
+              </button>
+            </form>
+
+            <!-- Divider -->
+
+            <div class="divider">
+              <span>OR</span>
+            </div>
+
+            <!-- Google -->
+
+            <div id="googleBtn" style="width:100%; display:flex; justify-content:center; margin-top:10px;"></div>
+
+            <!-- Login -->
+
+            <p class="login-link">
+              Already have an account?
+
+              <a href="login.html"> Sign In </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Theme -->
+
+    <script src="../js/config.js"></script>
+    <script src="../js/theme.js"></script>
+
+    <!-- Register -->
+
+    <script src="../js/register.js"></script>
+  </body>
+</html>

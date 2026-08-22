@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | ApplyAI</title>
+
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/dashboard-extra.css">
+    <link rel="stylesheet" href="../css/dark-theme.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- ==========================
+             Sidebar
+        =========================== -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <!-- Logo -->
+
+            <div class="logo">
+
+                <i class="fa-solid fa-briefcase"></i>
+
+                <h2>ApplyAI</h2>
+
+            </div>
+
+            <!-- Navigation -->
+
+            <nav>
+
+                <ul>
+
+                    <li class="active">
+
+                        <a href="./dashboard.html">
+
+                            <i class="fa-solid fa-house"></i>
+
+                            <span>Dashboard</span>
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="./applications.html">
+
+                            <i class="fa-solid fa-folder-open"></i>
+
+                            <span>Applications</span>
+
+                        </a>
+
+                    </li>
+
+
+
+                    <li>
+
+                        <a href="./profile.html">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <span>Profile</span>
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="./preferences.html">
+
+                            <i class="fa-solid fa-sliders"></i>
+
+                            <span>Preferences</span>
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="./review.html">
+
+                            <i class="fa-solid fa-star"></i>
+
+                            <span>Review</span>
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </nav>
+
+            <!-- Logout -->
+
+            <div class="logout">
+                <a href="./login.html" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- ==========================
+             Main Content
+        =========================== -->
+
+        <main class="main-content">
+
+            <!-- Top Navbar -->
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <h1>Dashboard</h1>
+
+                    <p>Track your job applications efficiently.</p>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <!-- Search -->
+
+                    <div class="search-box">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input type="text" id="searchInput" placeholder="Search by company or job title...">
+
+                    </div>
+
+                    <!-- Right Actions -->
+
+                    <div class="topbar-actions">
+
+                        <!-- Notification -->
+                        <div class="notification-wrapper" style="position: relative; display: flex; align-items: center;">
+                            <button class="icon-btn" id="notificationBtn" aria-label="Notifications" style="position: relative;">
+                                <i class="fa-regular fa-bell"></i>
+                                <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
+                            </button>
+                            <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+                                <div class="dropdown-header">
+                                    <h3>Notifications</h3>
+                                    <button id="markAllReadBtn">Mark all read</button>
+                                </div>
+                                <div class="dropdown-content" id="notificationList">
+                                    <!-- Dynamic notifications -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile -->
+                        <div class="profile">
+                            <div class="profile-avatar" id="profileAvatar">
+                                U
+                            </div>
+                            <div class="profile-info">
+                                <h4>Welcome</h4>
+                                <span id="profileName">User</span>
+                            </div>
+                        </div>
+
+                        <!-- Theme Toggle Button -->
+                        <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                            <i class="fa-solid fa-sun sun-icon"></i>
+                            <i class="fa-solid fa-moon moon-icon"></i>
+                        </button>
+
+                        <!-- Mobile Menu -->
+
+                        <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+
+                            <i class="fa-solid fa-bars"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+            <!-- Welcome Banner -->
+
+            <section class="welcome-banner">
+
+                <div class="welcome-text">
+
+                    <h2>
+
+                        👋 Welcome back,
+                        <span id="userName">User</span>
+
+                    </h2>
+
+                    <p>
+
+                        Manage your job applications,
+                        monitor interview progress,
+                        and stay on top of your career journey.
+
+                    </p>
+
+                </div>
+
+                <button class="add-job-btn" id="addJobBtn">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Job
+
+                </button>
+
+            </section>
+
+            <!-- ==========================
+                 AI Job Agent Console
+            =========================== -->
+            <section class="job-hunt-console" id="jobHuntSection">
+                <div class="console-header">
+                    <div class="console-title">
+                        <h3><i class="fa-solid fa-robot"></i> AI Job Agent Console</h3>
+                        <p>Automatically find, score, and apply to roles matching your preferences.</p>
+                    </div>
+                    <button class="hunt-btn" id="startHuntBtn">
+                        <i class="fa-solid fa-play"></i> Start Job Hunt
+                    </button>
+                </div>
+                
+                <div class="console-filters">
+                    <div class="filter-group">
+                        <label for="freshnessFilter"><i class="fa-regular fa-calendar-days"></i> Date Posted</label>
+                        <select id="freshnessFilter">
+                            <option value="1">Last 24 Hours</option>
+                            <option value="3">Last 3 Days</option>
+                            <option value="7" selected>Last 7 Days (Default)</option>
+                            <option value="14">Last 2 Weeks</option>
+                            <option value="30">Last 30 Days</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="workModeFilter"><i class="fa-solid fa-briefcase"></i> Work Mode</label>
+                        <select id="workModeFilter">
+                            <option value="all" selected>All Work Modes</option>
+                            <option value="Remote">Remote Only</option>
+                            <option value="Hybrid">Hybrid Only</option>
+                            <option value="Onsite">Onsite Only</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sortByFilter"><i class="fa-solid fa-arrow-down-wide-short"></i> Sort By</label>
+                        <select id="sortByFilter">
+                            <option value="match" selected>Highest ATS Match</option>
+                            <option value="date">Most Recent First</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="console-body" id="consoleBody" style="display: none;">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="progressBarFill"></div>
+                    </div>
+                    <div class="console-status-text">
+                        Status: <span id="consoleStatusVal" class="status-idle">Idle</span>
+                    </div>
+                    <div class="terminal-logs" id="terminalLogs">
+                        <div class="log-line text-info">> Ready to start AI job search. Please ensure your Profile and Preferences are updated.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics -->
+
+            <section class="stats-container">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon applications">
+
+                        <i class="fa-solid fa-briefcase"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <h3>Total Applications</h3>
+
+                        <h2 id="totalApplications"><span class="skeleton-loader" style="width: 50px; height: 28px; vertical-align: middle;"></span></h2>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon interviews">
+
+                        <i class="fa-solid fa-user-tie"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <h3>Interviews</h3>
+
+                        <h2 id="interviewCount"><span class="skeleton-loader" style="width: 50px; height: 28px; vertical-align: middle;"></span></h2>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon offers">
+
+                        <i class="fa-solid fa-award"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <h3>Offers</h3>
+
+                        <h2 id="offerCount"><span class="skeleton-loader" style="width: 50px; height: 28px; vertical-align: middle;"></span></h2>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon rejected">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <h3>Rejected</h3>
+
+                        <h2 id="rejectedCount"><span class="skeleton-loader" style="width: 50px; height: 28px; vertical-align: middle;"></span></h2>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 Dashboard Content
+            ========================================== -->
+
+            <section class="dashboard-grid">
+
+                <!-- Application Activity -->
+
+                <div class="dashboard-card">
+
+                    <div class="card-header">
+
+                        <h3>Application Activity</h3>
+
+                        <button class="view-btn" id="viewReportBtn">
+
+                            View Report
+
+                        </button>
+
+                    </div>
+
+                    <div class="chart-container" style="position: relative; height: 330px; width: 100%; padding: 10px;">
+                        <div id="chartSkeleton" class="chart-skeleton-wrapper">
+                            <div class="chart-skeleton-bar">
+                                <div class="skeleton-loader chart-skeleton-bar-item" style="height: 40%; width: 8%;"></div>
+                                <div class="skeleton-loader chart-skeleton-bar-item" style="height: 60%; width: 8%;"></div>
+                                <div class="skeleton-loader chart-skeleton-bar-item" style="height: 30%; width: 8%;"></div>
+                                <div class="skeleton-loader chart-skeleton-bar-item" style="height: 80%; width: 8%;"></div>
+                                <div class="skeleton-loader chart-skeleton-bar-item" style="height: 50%; width: 8%;"></div>
+                                <div class="skeleton-loader chart-skeleton-bar-item" style="height: 90%; width: 8%;"></div>
+                                <div class="skeleton-loader chart-skeleton-bar-item" style="height: 70%; width: 8%;"></div>
+                            </div>
+                        </div>
+                        <canvas id="activityChart" style="display: none;"></canvas>
+                    </div>
+
+                </div>
+
+                <!-- Recent Applications -->
+
+                <div class="dashboard-card">
+
+                    <div class="card-header">
+
+                        <h3>Recent Applications</h3>
+
+                        <button class="view-btn" onclick="location.href='./applications.html'">
+
+                            View All
+
+                        </button>
+
+                    </div>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Company</th>
+
+                                    <th>Role</th>
+
+                                    <th>Status</th>
+
+                                    <th>Applied</th>
+
+                                </tr>
+
+                            </thead>
+
+                             <tbody id="applicationsTableBody">
+
+                                 <tr>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 80px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 140px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 22px; width: 65px; border-radius: 12px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 75px;"></div></td>
+
+                                 </tr>
+
+                                 <tr>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 100px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 120px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 22px; width: 65px; border-radius: 12px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 75px;"></div></td>
+
+                                 </tr>
+
+                                 <tr>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 90px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 150px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 22px; width: 65px; border-radius: 12px;"></div></td>
+
+                                     <td><div class="skeleton-loader" style="height: 18px; width: 75px;"></div></td>
+
+                                 </tr>
+
+                             </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 Add Job Modal
+            ========================================== -->
+
+            <div class="modal-overlay" id="jobModal">
+
+                <div class="job-modal">
+
+                    <div class="modal-header">
+
+                        <h2>Add New Job</h2>
+
+                        <button class="close-modal" id="closeModal" type="button">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+                    <form id="jobForm">
+
+                        <div class="form-group">
+
+                            <label for="company">
+
+                                Company Name
+
+                            </label>
+
+                            <input type="text" id="company" placeholder="Google" required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="jobTitle">
+
+                                Job Title
+
+                            </label>
+
+                            <input type="text" id="jobTitle" placeholder="Frontend Developer" required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="location">
+
+                                Location
+
+                            </label>
+
+                            <input type="text" id="location" placeholder="Bangalore">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="status">
+
+                                Status
+
+                            </label>
+
+                            <select id="status">
+
+                                <option value="Applied">Applied</option>
+
+                                <option value="Interview">Interview</option>
+
+                                <option value="Rejected">Rejected</option>
+
+                                <option value="Selected">Selected</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="appliedDate">
+
+                                Applied Date
+
+                            </label>
+
+                            <input type="date" id="appliedDate">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="jobLink">
+
+                                Job Link
+
+                            </label>
+
+                            <input type="url" id="jobLink" placeholder="https://company.com/jobs">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="workMode">
+
+                                Work Mode
+
+                            </label>
+
+                            <select id="workMode">
+
+                                <option value="Onsite">Onsite</option>
+
+                                <option value="Hybrid">Hybrid</option>
+
+                                <option value="Remote">Remote</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="employmentType">
+
+                                Employment Type
+
+                            </label>
+
+                            <select id="employmentType">
+
+                                <option value="Full-time">Full-time</option>
+
+                                <option value="Part-time">Part-time</option>
+
+                                <option value="Internship">Internship</option>
+
+                                <option value="Contract">Contract</option>
+
+                                <option value="Freelance">Freelance</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="experience">
+
+                                Experience Required (Years)
+
+                            </label>
+
+                            <input type="number" id="experience" min="0" placeholder="0">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="salary">
+
+                                Expected Salary (Optional)
+
+                            </label>
+
+                            <input type="text" id="salary" placeholder="8 LPA">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="notes">
+
+                                Notes
+
+                            </label>
+
+                            <textarea id="notes" rows="4"
+                                placeholder="Interview details, recruiter name, referral, follow-up, etc."></textarea>
+
+                        </div>
+
+                        <div class="modal-buttons">
+
+                            <button type="button" class="cancel-btn" id="cancelModal">
+
+                                Cancel
+
+                            </button>
+
+                            <button type="submit" class="save-btn">
+
+                                Save Job
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- ==========================================
+         Dashboard JavaScript
+    ========================================== -->
+    <!-- Analytics Summary Modal -->
+    <div id="analyticsModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-chart-pie" style="color: var(--primary); margin-right: 8px;"></i> Weekly Activity Summary</h2>
+                <button class="close-modal" id="closeAnalyticsModal">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px 0 10px 0;">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <div style="font-size: 3.5rem; font-weight: 800; color: var(--primary); line-height: 1;" id="reportTotalCount">0</div>
+                    <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 5px;">Total Applications Sent (Last 7 Days)</p>
+                </div>
+                
+                <div class="analytics-detail-card" style="border-left: 4px solid var(--primary);">
+                    <h4 style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px; font-weight: 600; color: inherit;">
+                        <i class="fa-solid fa-bolt" style="color: var(--warning);"></i> Peak Productivity
+                    </h4>
+                    <p style="margin: 0; font-size: 0.92rem; line-height: 1.5; color: inherit;" id="reportPeakDayText">Your busiest day was ... with ... applications.</p>
+                </div>
+
+                <div class="analytics-detail-card" style="border-left: 4px solid var(--success);">
+                    <h4 style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px; font-weight: 600; color: inherit;">
+                        <i class="fa-solid fa-star" style="color: var(--success);"></i> Recommendations
+                    </h4>
+                    <p style="margin: 0; font-size: 0.92rem; line-height: 1.5; color: inherit;" id="reportRecommendationsText">Keep it up! Consistency is key to accelerating response rates.</p>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;">
+                <button class="modal-btn-secondary" id="closeAnalyticsModalBtn" style="padding: 10px 20px; border: 1px solid var(--border); background: var(--white); border-radius: 6px; cursor: pointer; font-weight: 500; color: var(--text);">Dismiss</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="../js/config.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/avatar_v3.js"></script>
+    <script src="../js/dashboard.js?v=4"></script>
+
+</body>
+
+</html>

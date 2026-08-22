@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | ApplyAI</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/dark-theme.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- ==========================
+             Sidebar
+        =========================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-briefcase"></i>
+                <h2>ApplyAI</h2>
+            </div>
+
+            <nav>
+                <ul>
+                    <li>
+                        <a href="./dashboard.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./applications.html">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span>Applications</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="./profile.html">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./preferences.html">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>Preferences</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./review.html">
+                            <i class="fa-solid fa-star"></i>
+                            <span>Review</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="logout">
+                <a href="./login.html" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ==========================
+             Main Content
+        =========================== -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>My Profile</h1>
+                    <p>Manage your professional details and resume.</p>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-actions">
+                        <!-- Notification -->
+                        <div class="notification-wrapper" style="position: relative; display: flex; align-items: center;">
+                            <button class="icon-btn" id="notificationBtn" aria-label="Notifications" style="position: relative;">
+                                <i class="fa-regular fa-bell"></i>
+                                <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
+                            </button>
+                            <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+                                <div class="dropdown-header">
+                                    <h3>Notifications</h3>
+                                    <button id="markAllReadBtn">Mark all read</button>
+                                </div>
+                                <div class="dropdown-content" id="notificationList">
+                                    <!-- Dynamic notifications -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Display -->
+                        <div class="profile">
+                            <div class="profile-avatar" id="profileAvatar">U</div>
+                            <div class="profile-info">
+                                <h4>Welcome</h4>
+                                <span id="profileName">User</span>
+                            </div>
+                        </div>
+
+                        <!-- Theme Toggle Button -->
+                        <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                            <i class="fa-solid fa-sun sun-icon"></i>
+                            <i class="fa-solid fa-moon moon-icon"></i>
+                        </button>
+
+                        <!-- Mobile Menu -->
+                        <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Profile Form Content -->
+            <div class="profile-grid">
+                <!-- Left: Form inputs -->
+                <div class="profile-form-container">
+                    <form id="profileForm">
+                        <!-- Personal Details Card -->
+                        <div class="profile-card">
+                            <h3><i class="fa-solid fa-address-card"></i> Personal Details</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="fullName">Full Name</label>
+                                    <input type="text" id="fullName" required placeholder="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" disabled placeholder="john.doe@example.com">
+                                    <small style="color: var(--text-light)">Email cannot be changed.</small>
+                                </div>
+                                 <div class="form-group" style="grid-column: span 2;">
+                                      <label for="phone">Phone Number</label>
+                                      <div class="phone-input-container" style="display: flex; gap: 8px;">
+                                          <select id="countryCode" class="form-select" style="width: 110px; flex-shrink: 0; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-weight: 500;">
+                                              <option value="+91">+91 (IN)</option>
+                                              <option value="+1">+1 (US)</option>
+                                              <option value="+44">+44 (UK)</option>
+                                              <option value="+49">+49 (DE)</option>
+                                              <option value="+33">+33 (FR)</option>
+                                              <option value="+61">+61 (AU)</option>
+                                              <option value="+65">+65 (SG)</option>
+                                              <option value="+31">+31 (NL)</option>
+                                              <option value="+353">+353 (IE)</option>
+                                              <option value="custom">Custom...</option>
+                                          </select>
+                                          <input type="text" id="customCountryCode" placeholder="+123" style="display: none; width: 85px; flex-shrink: 0; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); font-weight: 500;">
+                                          <input type="tel" id="phone" placeholder="9876543210" style="flex-grow: 1; min-width: 0;">
+                                      </div>
+                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Professional Details Card -->
+                        <div class="profile-card">
+                            <h3><i class="fa-solid fa-user-graduate"></i> Professional Details</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="education">Highest Education</label>
+                                    <input type="text" id="education" placeholder="B.Tech in Computer Science">
+                                </div>
+                                <div class="form-group">
+                                    <label for="experience">Total Experience (Years)</label>
+                                    <input type="text" id="experience" placeholder="3 years">
+                                </div>
+                                <div class="form-group">
+                                    <label for="currentTitle">Current Job Title</label>
+                                    <input type="text" id="currentTitle" placeholder="Software Engineer">
+                                </div>
+                                <div class="form-group">
+                                    <label for="currentCompany">Current Company</label>
+                                    <input type="text" id="currentCompany" placeholder="Acme Corp">
+                                </div>
+                                <div class="form-group">
+                                    <label for="noticePeriod">Notice Period</label>
+                                    <select id="noticePeriod" class="form-select">
+                                        <option value="Immediate">Immediate</option>
+                                        <option value="15 Days">15 Days</option>
+                                        <option value="1 Month">1 Month</option>
+                                        <option value="2 Months">2 Months</option>
+                                        <option value="3 Months">3 Months</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="expectedSalary">Expected Salary</label>
+                                    <input type="text" id="expectedSalary" placeholder="12 LPA">
+                                </div>
+                                <div class="form-group">
+                                    <label for="requireSponsorship">Require Visa Sponsorship?</label>
+                                    <select id="requireSponsorship" class="form-select">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Key Skills</label>
+                                    <div class="custom-multiselect" id="skillsMultiselect">
+                                        <div class="multiselect-select" id="skillsSelectBox">
+                                            <span class="placeholder">Select Skills</span>
+                                            <i class="fa-solid fa-chevron-down"></i>
+                                        </div>
+                                        <div class="multiselect-options" id="skillsOptionsContainer">
+                                            <div class="search-container">
+                                                <input type="text" class="multiselect-search-input" placeholder="Search or add custom skill...">
+                                            </div>
+                                            <div class="options-list">
+                                                <!-- Tech Skills -->
+                                                <label><input type="checkbox" value="JavaScript"> JavaScript</label>
+                                                <label><input type="checkbox" value="HTML"> HTML</label>
+                                                <label><input type="checkbox" value="CSS"> CSS</label>
+                                                <label><input type="checkbox" value="React"> React</label>
+                                                <label><input type="checkbox" value="Node.js"> Node.js</label>
+                                                <label><input type="checkbox" value="Express"> Express</label>
+                                                <label><input type="checkbox" value="MongoDB"> MongoDB</label>
+                                                <label><input type="checkbox" value="SQL"> SQL</label>
+                                                <label><input type="checkbox" value="Python"> Python</label>
+                                                <label><input type="checkbox" value="Java"> Java</label>
+                                                <label><input type="checkbox" value="C++"> C++</label>
+                                                <label><input type="checkbox" value="TypeScript"> TypeScript</label>
+                                                <label><input type="checkbox" value="Git"> Git</label>
+                                                <label><input type="checkbox" value="AWS"> AWS</label>
+                                                <label><input type="checkbox" value="Docker"> Docker</label>
+                                                <label><input type="checkbox" value="Kubernetes"> Kubernetes</label>
+                                                <label><input type="checkbox" value="Angular"> Angular</label>
+                                                <label><input type="checkbox" value="Vue"> Vue</label>
+                                                <label><input type="checkbox" value="PHP"> PHP</label>
+                                                <label><input type="checkbox" value="Ruby"> Ruby</label>
+                                                <label><input type="checkbox" value="Swift"> Swift</label>
+                                                <label><input type="checkbox" value="Flutter"> Flutter</label>
+                                                <label><input type="checkbox" value="React Native"> React Native</label>
+                                                <!-- Soft Skills -->
+                                                <label><input type="checkbox" value="Communication"> Communication</label>
+                                                <label><input type="checkbox" value="Teamwork"> Teamwork</label>
+                                                <label><input type="checkbox" value="Problem Solving"> Problem Solving</label>
+                                                <label><input type="checkbox" value="Time Management"> Time Management</label>
+                                                <label><input type="checkbox" value="Leadership"> Leadership</label>
+                                                <label><input type="checkbox" value="Adaptability"> Adaptability</label>
+                                                <label><input type="checkbox" value="Critical Thinking"> Critical Thinking</label>
+                                                <label><input type="checkbox" value="Creativity"> Creativity</label>
+                                                <label><input type="checkbox" value="Work Ethic"> Work Ethic</label>
+                                                <label><input type="checkbox" value="Emotional Intelligence"> Emotional Intelligence</label>
+                                                <label><input type="checkbox" value="Conflict Resolution"> Conflict Resolution</label>
+                                                <label><input type="checkbox" value="Interpersonal Skills"> Interpersonal Skills</label>
+                                                <label><input type="checkbox" value="Customer Service"> Customer Service</label>
+                                                <label><input type="checkbox" value="Collaboration"> Collaboration</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Portfolios & Social Links -->
+                        <div class="profile-card">
+                            <h3><i class="fa-solid fa-link"></i> Social & Portfolio Links</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="portfolio">Portfolio Website</label>
+                                    <input type="url" id="portfolio" placeholder="https://myportfolio.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="linkedin">LinkedIn Profile</label>
+                                    <input type="url" id="linkedin" placeholder="https://linkedin.com/in/username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="github">GitHub Profile</label>
+                                    <input type="url" id="github" placeholder="https://github.com/username">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="save-btn" id="saveProfileBtn">
+                                <i class="fa-solid fa-floppy-disk"></i> Save Profile Details
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right: Sidebar Widgets -->
+                <div class="profile-sidebar-widgets">
+
+                    <!-- Avatar Upload Card -->
+                    <div class="profile-card" style="text-align: center;">
+                        <h3><i class="fa-solid fa-camera"></i> Profile Photo</h3>
+
+                        <!-- Clickable avatar circle -->
+                        <div id="avatarUploadWrapper" style="position: relative; width: 110px; height: 110px; margin: 18px auto 14px; cursor: pointer;" title="Click to change photo">
+                            <div id="avatarPreview"
+                                style="width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #2563EB, #60A5FA); display: flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 700; color: #fff; overflow: hidden; border: 3px solid var(--border); transition: opacity 0.2s;">
+                                U
+                            </div>
+                            <!-- Camera hover overlay -->
+                            <div id="avatarOverlay" style="position: absolute; inset: 0; border-radius: 50%; background: rgba(0,0,0,0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; opacity: 0; transition: opacity 0.2s; pointer-events: none;">
+                                <i class="fa-solid fa-camera" style="color: #fff; font-size: 1.4rem;"></i>
+                                <span style="color: #fff; font-size: 0.65rem; font-weight: 600;">Change</span>
+                            </div>
+                            <!-- Hidden file input -->
+                            <input type="file" id="avatarFileInput" accept="image/jpeg,image/png,image/webp" style="display: none;">
+                        </div>
+
+                        <p style="font-size: 0.78rem; color: var(--text-light); margin-bottom: 14px;">JPG, PNG or WEBP &bull; Max 2MB</p>
+
+                        <button id="uploadAvatarBtn" class="upload-btn" disabled style="width: 100%; margin-bottom: 8px;">
+                            <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Photo
+                        </button>
+
+                        <button id="deleteAvatarBtn" class="upload-btn" style="width: 100%; background: #EF4444; color: #fff; border: none; display: none;">
+                            <i class="fa-solid fa-trash"></i> Remove Photo
+                        </button>
+                    </div>
+
+                    <!-- Resume Upload Widget -->
+                    <div class="profile-card resume-widget">
+                        <h3><i class="fa-solid fa-file-pdf"></i> Upload Resume</h3>
+                        <div class="resume-status" id="resumeStatus">
+                            <p class="no-resume"><i class="fa-solid fa-circle-info"></i> No resume uploaded yet.</p>
+                        </div>
+                        <form id="resumeForm">
+                            <div class="file-drop-area" id="fileDropArea">
+                                <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                <p>Drag & drop or click to upload</p>
+                                <span class="file-info">Supports PDF, DOC, DOCX (Max 5MB)</span>
+                                <input type="file" id="resumeFileInput" accept=".pdf,.doc,.docx" style="display: none;">
+                            </div>
+                            <button type="submit" class="upload-btn" id="uploadResumeBtn" disabled>
+                                <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload New Resume
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notifications Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/avatar_v3.js"></script>
+    <script src="../js/profile_v3.js"></script>
+</body>
+
+</html>

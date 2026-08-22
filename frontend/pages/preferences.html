@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preferences | ApplyAI</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/profile.css"> <!-- Reuse card layouts and form spacing -->
+    <link rel="stylesheet" href="../css/dark-theme.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- ==========================
+             Sidebar
+        =========================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-briefcase"></i>
+                <h2>ApplyAI</h2>
+            </div>
+
+            <nav>
+                <ul>
+                    <li>
+                        <a href="./dashboard.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./applications.html">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span>Applications</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./profile.html">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="./preferences.html">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>Preferences</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./review.html">
+                            <i class="fa-solid fa-star"></i>
+                            <span>Review</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="logout">
+                <a href="./login.html" id="logoutBtn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ==========================
+             Main Content
+        =========================== -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1>Job Preferences</h1>
+                    <p>Customize your automatic AI search and application filters.</p>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-actions">
+                        <!-- Notification -->
+                        <div class="notification-wrapper" style="position: relative; display: flex; align-items: center;">
+                            <button class="icon-btn" id="notificationBtn" aria-label="Notifications" style="position: relative;">
+                                <i class="fa-regular fa-bell"></i>
+                                <span class="notification-badge" id="notificationBadge" style="display: none;"></span>
+                            </button>
+                            <div class="notification-dropdown" id="notificationDropdown" style="display: none;">
+                                <div class="dropdown-header">
+                                    <h3>Notifications</h3>
+                                    <button id="markAllReadBtn">Mark all read</button>
+                                </div>
+                                <div class="dropdown-content" id="notificationList">
+                                    <!-- Dynamic notifications -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Display -->
+                        <div class="profile">
+                            <div class="profile-avatar" id="profileAvatar">U</div>
+                            <div class="profile-info">
+                                <h4>Welcome</h4>
+                                <span id="profileName">User</span>
+                            </div>
+                        </div>
+
+                        <!-- Theme Toggle Button -->
+                        <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">
+                            <i class="fa-solid fa-sun sun-icon"></i>
+                            <i class="fa-solid fa-moon moon-icon"></i>
+                        </button>
+
+                        <!-- Mobile Menu -->
+                        <button class="menu-toggle" id="menuToggle" aria-label="Open Menu">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Preferences Form Content -->
+            <div class="profile-grid">
+                <!-- Left: Form inputs -->
+                <div class="profile-form-container">
+                    <form id="preferencesForm">
+                    <!-- Job Hunting Preferences Card -->
+                    <div class="profile-card">
+                        <h3><i class="fa-solid fa-sliders"></i> Job Hunt Filters</h3>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>Preferred Job Roles</label>
+                                <div class="custom-multiselect" id="rolesMultiselect">
+                                    <div class="multiselect-select" id="rolesSelectBox">
+                                        <span class="placeholder">Select Job Roles</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                    <div class="multiselect-options" id="rolesOptionsContainer">
+                                        <div class="search-container">
+                                            <input type="text" class="multiselect-search-input" placeholder="Search or add custom role...">
+                                        </div>
+                                         <div class="options-list">
+                                             <label><input type="checkbox" value="Frontend Developer"> Frontend Developer</label>
+                                             <label><input type="checkbox" value="Backend Developer"> Backend Developer</label>
+                                             <label><input type="checkbox" value="Fullstack Developer"> Fullstack Developer</label>
+                                             <label><input type="checkbox" value="Software Engineer"> Software Engineer</label>
+                                             <label><input type="checkbox" value="Node.js Developer"> Node.js Developer</label>
+                                             <label><input type="checkbox" value="React Engineer"> React Engineer</label>
+                                             <label><input type="checkbox" value="Javascript Developer"> Javascript Developer</label>
+                                             <label><input type="checkbox" value="Python Developer"> Python Developer</label>
+                                             <label><input type="checkbox" value="Java Developer"> Java Developer</label>
+                                             <label><input type="checkbox" value="DevOps Engineer"> DevOps Engineer</label>
+                                             <label><input type="checkbox" value="Cloud Architect"> Cloud Architect</label>
+                                             <label><input type="checkbox" value="Systems Administrator"> Systems Administrator</label>
+                                             <label><input type="checkbox" value="Service Desk Analyst"> Service Desk Analyst</label>
+                                             <label><input type="checkbox" value="Helpdesk Support"> Helpdesk Support</label>
+                                             <label><input type="checkbox" value="Desktop Support"> Desktop Support</label>
+                                             <label><input type="checkbox" value="Technical Support Engineer"> Technical Support Engineer</label>
+                                             <label><input type="checkbox" value="Application Support Engineer"> Application Support Engineer</label>
+                                             <label><input type="checkbox" value="Network Engineer"> Network Engineer</label>
+                                             <label><input type="checkbox" value="Network Administrator"> Network Administrator</label>
+                                             <label><input type="checkbox" value="Database Administrator"> Database Administrator</label>
+                                             <label><input type="checkbox" value="QA Engineer"> QA Engineer</label>
+                                             <label><input type="checkbox" value="Data Scientist"> Data Scientist</label>
+                                             <label><input type="checkbox" value="Data Analyst"> Data Analyst</label>
+                                             <label><input type="checkbox" value="UI/UX Designer"> UI/UX Designer</label>
+                                             <label><input type="checkbox" value="Product Manager"> Product Manager</label>
+                                             <label><input type="checkbox" value="Project Manager"> Project Manager</label>
+                                             <label><input type="checkbox" value="Scrum Master"> Scrum Master</label>
+                                             <label><input type="checkbox" value="Solutions Architect"> Solutions Architect</label>
+                                             <label><input type="checkbox" value="Cybersecurity Specialist"> Cybersecurity Specialist</label>
+                                             <label><input type="checkbox" value="Machine Learning Engineer"> Machine Learning Engineer</label>
+                                             <label><input type="checkbox" value="Salesforce Developer"> Salesforce Developer</label>
+                                             <label><input type="checkbox" value="SAP Consultant"> SAP Consultant</label>
+                                             <label><input type="checkbox" value="Technical Writer"> Technical Writer</label>
+                                             <label><input type="checkbox" value="Content Writer"> Content Writer</label>
+                                             <label><input type="checkbox" value="Digital Marketer"> Digital Marketer</label>
+                                             <label><input type="checkbox" value="HR Manager"> HR Manager</label>
+                                             <label><input type="checkbox" value="Recruiter"> Recruiter</label>
+                                             <label><input type="checkbox" value="Sales Executive"> Sales Executive</label>
+                                             <label><input type="checkbox" value="Customer Success Specialist"> Customer Success Specialist</label>
+                                             <label><input type="checkbox" value="Customer Support Representative"> Customer Support Representative</label>
+                                             <label><input type="checkbox" value="Operations Associate"> Operations Associate</label>
+                                             <label><input type="checkbox" value="Office Administrator"> Office Administrator</label>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label>Preferred Job Locations</label>
+                                <div class="custom-multiselect" id="locationsMultiselect">
+                                    <div class="multiselect-select" id="locationsSelectBox">
+                                        <span class="placeholder">Select Locations</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </div>
+                                    <div class="multiselect-options" id="locationsOptionsContainer">
+                                        <div class="search-container">
+                                            <input type="text" class="multiselect-search-input" placeholder="Search or add custom location...">
+                                        </div>
+                                        <div class="options-list">
+                                             <label><input type="checkbox" value="Chennai"> Chennai</label>
+                                             <label><input type="checkbox" value="Coimbatore"> Coimbatore</label>
+                                             <label><input type="checkbox" value="Trichy"> Trichy (Tiruchirappalli)</label>
+                                             <label><input type="checkbox" value="Madurai"> Madurai</label>
+                                             <label><input type="checkbox" value="Salem"> Salem</label>
+                                             <label><input type="checkbox" value="Tiruppur"> Tiruppur</label>
+                                             <label><input type="checkbox" value="Erode"> Erode</label>
+                                             <label><input type="checkbox" value="Tirunelveli"> Tirunelveli</label>
+                                             <label><input type="checkbox" value="Vellore"> Vellore</label>
+                                             <label><input type="checkbox" value="Hosur"> Hosur</label>
+                                             <label><input type="checkbox" value="Thoothukudi"> Thoothukudi</label>
+                                             <label><input type="checkbox" value="Nagercoil"> Nagercoil</label>
+                                             <label><input type="checkbox" value="Thanjavur"> Thanjavur</label>
+                                             <label><input type="checkbox" value="Dindigul"> Dindigul</label>
+                                             <label><input type="checkbox" value="Karur"> Karur</label>
+                                             <label><input type="checkbox" value="Ooty"> Ooty (Udhagamandalam)</label>
+                                             <label><input type="checkbox" value="Kanchipuram"> Kanchipuram</label>
+                                             <label><input type="checkbox" value="Bangalore"> Bangalore (Bengaluru)</label>
+                                             <label><input type="checkbox" value="Hyderabad"> Hyderabad</label>
+                                             <label><input type="checkbox" value="Pune"> Pune</label>
+                                             <label><input type="checkbox" value="Mumbai"> Mumbai</label>
+                                             <label><input type="checkbox" value="Kochi"> Kochi (Cochin)</label>
+                                             <label><input type="checkbox" value="Trivandrum"> Trivandrum</label>
+                                             <label><input type="checkbox" value="Delhi NCR"> Delhi NCR</label>
+                                             <label><input type="checkbox" value="Noida"> Noida</label>
+                                             <label><input type="checkbox" value="Gurugram"> Gurugram</label>
+                                             <label><input type="checkbox" value="Kolkata"> Kolkata</label>
+                                             <label><input type="checkbox" value="Ahmedabad"> Ahmedabad</label>
+                                             <label><input type="checkbox" value="Jaipur"> Jaipur</label>
+                                             <label><input type="checkbox" value="Chandigarh"> Chandigarh</label>
+                                             <label><input type="checkbox" value="Indore"> Indore</label>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group checkbox-group full-width">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="includeRemoteJobs" checked>
+                                    <span>Include remote jobs</span>
+                                </label>
+                                <span class="helper-text">If enabled, the AI will search and fetch remote jobs. Otherwise, only onsite and hybrid jobs matching your preferred locations will be processed.</span>
+                            </div>
+
+                            <div class="form-group full-width remote-regions-container" id="remoteLocationsWrapper" style="margin-left: 24px; display: flex; flex-direction: column; gap: 12px; margin-top: -10px; margin-bottom: 20px;">
+                                <label style="font-size: 0.9rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <i class="fa-solid fa-earth-asia"></i> Target Remote Regions
+                                </label>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                                    
+                                    <!-- India Remote Card -->
+                                    <label class="remote-region-card">
+                                        <input type="checkbox" id="remotePrefIndia" checked style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer; accent-color: var(--primary);">
+                                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                                            <span class="region-title" style="font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                                                <i class="fa-solid fa-location-dot" style="color: #EF4444;"></i> Remote jobs within India
+                                            </span>
+                                            <span class="region-desc" style="font-size: 0.75rem; line-height: 1.4;">
+                                                Matches remote roles located in Bangalore, Mumbai, Pune, and other domestic hubs.
+                                            </span>
+                                        </div>
+                                    </label>
+                                    
+                                    <!-- Outside India Remote Card -->
+                                    <label class="remote-region-card">
+                                        <input type="checkbox" id="remotePrefOutside" checked style="width: 18px; height: 18px; margin-top: 2px; cursor: pointer; accent-color: var(--primary);">
+                                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                                            <span class="region-title" style="font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                                                <i class="fa-solid fa-globe" style="color: var(--primary);"></i> Remote jobs outside India
+                                            </span>
+                                            <span class="region-desc" style="font-size: 0.75rem; line-height: 1.4;">
+                                                Matches international remote roles from global job boards (US, Europe, UK).
+                                            </span>
+                                        </div>
+                                    </label>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prefExperience">Required Experience Level</label>
+                                <select id="prefExperience" class="form-select">
+                                    <option value="Fresher (0 years)">Fresher (0 years)</option>
+                                    <option value="1-3 years">1-3 years</option>
+                                    <option value="3-5 years">3-5 years</option>
+                                    <option value="5+ years">5+ years</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prefSalary">Desired Expected Salary</label>
+                                <select id="prefSalary" class="form-select">
+                                    <option value="3-6 LPA">3-6 LPA</option>
+                                    <option value="6-10 LPA">6-10 LPA</option>
+                                    <option value="10-15 LPA">10-15 LPA</option>
+                                    <option value="15-25 LPA">15-25 LPA</option>
+                                    <option value="25+ LPA">25+ LPA</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prefWorkMode">Work Mode preference</label>
+                                <select id="prefWorkMode" class="form-select">
+                                    <option value="Any">Any</option>
+                                    <option value="Remote">Remote</option>
+                                    <option value="Hybrid">Hybrid</option>
+                                    <option value="Onsite">Onsite</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prefEmploymentType">Employment Type</label>
+                                <select id="prefEmploymentType" class="form-select">
+                                    <option value="Any">Any</option>
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                    <option value="Internship">Internship</option>
+                                    <option value="Contract">Contract</option>
+                                    <option value="Freelance">Freelance</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="justify-content: flex-start;">
+                        <button type="submit" class="save-btn" id="savePrefsBtn">
+                            <i class="fa-solid fa-square-check"></i> Save My Preferences
+                        </button>
+                    </div>
+                    </form>
+                </div>
+
+                <!-- Right: Interactive Sidebar Widgets -->
+                <div class="profile-sidebar-widgets">
+                    <!-- Widget 1: Match Strength Ring -->
+                    <div class="profile-card progress-widget">
+                        <h3><i class="fa-solid fa-gauge-high"></i> AI Match Strength</h3>
+                        <div class="progress-ring-wrapper">
+                            <svg class="progress-ring" width="140" height="140">
+                                <circle class="progress-ring-circle-bg" cx="70" cy="70" r="55"></circle>
+                                <circle class="progress-ring-circle" id="strengthRing" cx="70" cy="70" r="55" stroke-dasharray="345.57" stroke-dashoffset="345.57"></circle>
+                            </svg>
+                            <div class="progress-value" id="strengthValue">0%</div>
+                        </div>
+                        <p class="progress-label" id="strengthLabel">Evaluating your setup coverage...</p>
+                        
+                        <!-- Dynamic Recommendations Checklist -->
+                        <div class="recommendations-widget">
+                            <h4>Optimizations</h4>
+                            <div class="rec-list" id="recommendationsList">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Widget 2: AI Search Engine Status -->
+                    <div class="profile-card status-widget">
+                        <div class="status-header">
+                            <h3><i class="fa-solid fa-server"></i> Search Engine</h3>
+                            <div class="status-badge">
+                                <div class="pulse-dot"></div>
+                                <span>Scanning</span>
+                            </div>
+                        </div>
+                        <div class="status-detail-list">
+                            <div class="status-detail-item">
+                                <span class="status-detail-label">Fetch Engine</span>
+                                <span class="status-detail-val">Active RSS/API</span>
+                            </div>
+                            <div class="status-detail-item">
+                                <span class="status-detail-label">Match Scope</span>
+                                <span class="status-detail-val" id="statusScope">Global & Local</span>
+                            </div>
+                            <div class="status-detail-item">
+                                <span class="status-detail-label">Sync Status</span>
+                                <span class="status-detail-val">Synced</span>
+                            </div>
+                            <div class="status-detail-item">
+                                <span class="status-detail-label">Deduplication</span>
+                                <span class="status-detail-val">Smart filters</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notifications Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/avatar_v3.js"></script>
+    <script src="../js/preferences.js?v=4"></script>
+</body>
+
+</html>
