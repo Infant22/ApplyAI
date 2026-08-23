@@ -975,6 +975,7 @@ if (interviewPrepBtn) {
             // Populate Accordion Cards
             currentPrepData.forEach((qObj, i) => {
                 const card = document.createElement("div");
+                card.className = "qa-card";
                 card.style.cssText = "border: 1px solid var(--border); border-radius: 10px; background: #F8FAFC; overflow: hidden; transition: all 0.2s; margin-bottom: 10px;";
                 
                 // Color badge based on category
