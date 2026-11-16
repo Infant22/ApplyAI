@@ -3,13 +3,19 @@ window.API_BASE = window.API_BASE ? (window.API_BASE.endsWith("/api") ? window.A
 // Global callback for Google OAuth2 response
 window.handleCredentialResponse = async (response) => {
     try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 20000);
+
         const res = await fetch(`${window.API_BASE}/users/google-login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ credential: response.credential })
+            body: JSON.stringify({ credential: response.credential }),
+            signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
         
         const data = await res.json();
         if (!res.ok) {
@@ -21,7 +27,11 @@ window.handleCredentialResponse = async (response) => {
         showToast("Google Login Successful!", "success");
         window.location.href = "dashboard.html";
     } catch (err) {
-        showToast(err.message, "error");
+        if (err.name === "AbortError") {
+            showToast("Server request timed out. Backend is waking up, please try again in a moment.", "error");
+        } else {
+            showToast(err.message || "Google Sign-In failed. Please check network connection.", "error");
+        }
     }
 };
 
@@ -249,61 +259,49 @@ document.addEventListener("DOMContentLoaded", () => {
         loginButton.textContent = "Signing In...";
 
         try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 20000);
 
             const response = await fetch(`${window.API_BASE}/users/login`, {
-
                 method: "POST",
-
                 headers: {
-
                     "Content-Type": "application/json"
-
                 },
-
                 body: JSON.stringify({
-
                     email: email.value.trim(),
                     password: password.value
-
-                })
-
+                }),
+                signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
 
             const data = await response.json();
 
             if (!response.ok) {
-
                 throw new Error(data.message || "Login Failed");
-
             }
 
             // Save JWT Token
-
             localStorage.setItem("token", data.token);
 
             // Save User Details
-
             localStorage.setItem("user", JSON.stringify(data.user));
 
             showToast("Login Successful!", "success");
 
             // Redirect to Dashboard
-
             window.location.href = "dashboard.html";
 
-        }
-
-        catch (error) {
-
-            showToast(error.message, "error");
-
-        }
-
-        finally {
-
+        } catch (error) {
+            if (error.name === "AbortError") {
+                showToast("Server request timed out. Backend is waking up, please try again in a moment.", "error");
+            } else {
+                showToast(error.message || "Failed to connect to server.", "error");
+            }
+        } finally {
             loginButton.disabled = false;
             loginButton.textContent = "Sign In";
-
         }
 
     });

@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -10,6 +11,12 @@ const { OAuth2Client } = require("google-auth-library");
 // ======================
 const registerUser = async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        message: "Database is connecting or temporarily paused. Please verify MongoDB Atlas cluster.",
+      });
+    }
+
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -53,6 +60,12 @@ const registerUser = async (req, res) => {
 // ======================
 const loginUser = async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        message: "Database is connecting or temporarily paused. Please verify MongoDB Atlas cluster.",
+      });
+    }
+
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -331,6 +344,12 @@ const resetPassword = async (req, res) => {
 // ======================
 const googleLogin = async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        message: "Database is connecting or temporarily paused. Please verify MongoDB Atlas cluster.",
+      });
+    }
+
     const { credential } = req.body;
     if (!credential) {
       return res.status(400).json({ message: "Google credential token is required" });
